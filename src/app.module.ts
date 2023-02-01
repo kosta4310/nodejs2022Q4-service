@@ -5,6 +5,5 @@ import { DbModule } from './db/db.module';
 
 @Module({
   imports: [UserModule, TrackModule, DbModule],
-
 })
 export class AppModule {}
