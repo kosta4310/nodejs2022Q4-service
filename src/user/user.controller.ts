@@ -1,18 +1,25 @@
-import { Controller, Get, Res, Req, Post, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Res, Req, Post, Param, ParseIntPipe, Body } from '@nestjs/common';
 import { Response, Request } from 'express';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService){}
   @Get()
-  async getAll(@Req() req: Request, @Res() res: Response) {
+  async getAll() {
+    try {
+      return await this.userService.getAllUsers();
+    } catch (error) {
+      
+    }
+        
+  }
 
-    res.statusCode = 300;
-    const r = this.userService.getAllUsers();
-    console.log(r);
-    
-    return res.send(r);
+  @Post()
+  async createUser(@Req() req: Request, @Res() res: Response, @Body() userDTO: CreateUserDto) {
+   
+    return 'hello';
   }
 
 @Get(':id')
@@ -23,10 +30,5 @@ export class UserController {
     return res.send({data: id, par: pa});
   }
 
-  @Post()
-  async createUser(@Req() req: Request, @Res() res: Response) {
-    // const r = this.userService.getAllUsers();
-    console.log(req.headers);
-    return res.send(`created `);
-  }
+  
 }
