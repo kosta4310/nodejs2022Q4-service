@@ -9,7 +9,10 @@ export class UserController {
   async getAll(@Req() req: Request, @Res() res: Response) {
 
     res.statusCode = 300;
-    return res.send('get all');
+    const r = this.userService.getAllUsers();
+    console.log(r);
+    
+    return res.send(r);
   }
 
 @Get(':id')
@@ -22,8 +25,8 @@ export class UserController {
 
   @Post()
   async createUser(@Req() req: Request, @Res() res: Response) {
-    const r = this.userService.getAllUsers(req.body);
+    // const r = this.userService.getAllUsers();
     console.log(req.headers);
-    return res.send(`created ${r}`);
+    return res.send(`created `);
   }
 }
