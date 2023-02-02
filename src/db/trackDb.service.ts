@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class TrackDbService {
-  private db: any[] = ['track1', 'track2']
+  private db: any[] = ['track1', 'track2'];
   getAll() {
     return this.db;
   }
