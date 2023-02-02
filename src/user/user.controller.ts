@@ -48,7 +48,8 @@ export class UserController {
   @Get(':id')
   async getUser(
     @Req() req: Request,
-    @Param('id', new ParseUUIDPipe()) id: string):  Promise<UserEntity> {
+    @Param('id', new ParseUUIDPipe()) id: string
+  ): Promise<UserEntity> {
       
     const user = await this.userService.getUser(id);
     return new UserEntity(user); 
@@ -69,9 +70,9 @@ export class UserController {
     @Req() req: Request,
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() passwordDTO: UpdatePasswordDto,
-  ) {
-    return await this.userService.updateUserPassword(id, passwordDTO);
-     
+  ): Promise<UserEntity> {
+     const user = await this.userService.updateUserPassword(id, passwordDTO);
+     return new UserEntity(user); 
   }
 
 }

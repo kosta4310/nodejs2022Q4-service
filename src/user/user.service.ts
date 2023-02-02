@@ -1,7 +1,9 @@
 import { HttpException, Inject, Injectable } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
+const bcrypt = require('bcrypt');
 import { DbModule } from 'src/db/db.module';
 import { UserDbService } from 'src/db/userDb.service';
+import { toCompare } from 'src/utils/toCompare';
+import { toHash } from 'src/utils/toHash';
 import { CreateUserDto } from './dto/createUserDto';
 import { UpdatePasswordDto } from './dto/updatePasswordDto';
 import { User } from './interfaces/user.interface';
@@ -15,21 +17,15 @@ export class UserService {
   }
 
   async createUser({ login, password }: CreateUserDto): Promise<User> {
-    const hashPassword: string = await new Promise((res, rej) => {
-      bcrypt.hash(password, 10, function(err, hash) {
-        if (err) {
-          rej('Error bcrypt');
-        }
-          res(hash);
-        });
-    })
-    
-    password = hashPassword;
-    const version = 1;
-    const createdAt = Date.now();
-    const updatedAt = Date.now();
+    const hashPassword = await toHash(password);
+    if (!hashPassword) {
+      throw new Error('Error bcrypt');
+    } 
 
-    return await this.userDb.createUser({ version, createdAt, updatedAt, login, password });
+    password = hashPassword;
+    
+    
+    return await this.userDb.createUser({ login, password });
   }
 
   async  getUser(id: string) {
@@ -55,29 +51,12 @@ export class UserService {
       throw new HttpException(`Record with id === ${id} doesn't exist`, 404)
     }
 
-    const passwordFromHash = await new Promise((res, rej) => {
-      bcrypt.compare(oldPassword, user.password, function(err, result) {
-        if (err) {
-          rej('Error bcrypt');
-        }
-        res(result)
-      });
-    })
-
-    if (passwordFromHash !== oldPassword) {
-      throw new HttpException(`oldPassword ${oldPassword} is wrong`, 403)
+    const isEquals = await toCompare(oldPassword, user.password);
+    if (!isEquals) {
+      throw new HttpException(`oldPassword ${oldPassword} is wrong`, 403);
     }
 
-    const hashPassword: string = await new Promise((res, rej) => {
-      bcrypt.hash(newPassword, 10, function(err, hash) {
-        if (err) {
-          rej('Error bcrypt');
-        }
-          res(hash);
-        });
-    })
-
-    user.password = hashPassword;
-    
+    const hashNewPassword = await toHash(newPassword);
+    return await this.userDb.updateUser(id, hashNewPassword);
   }
 }
