@@ -16,4 +16,24 @@ export class UserDbService {
     this.db.push(newUser);
     return newUser;
   }
+
+  async getUser(id: string) {
+    return this.db.find(user => user.id === id);
+  }
+
+  async deleteUser(id: string) {
+    const beforeLength = this.db.length;
+    const filteredDb = this.db.filter(user => user.id !== id);
+    if (beforeLength !== filteredDb.length) {
+      this.db = filteredDb;
+      return id;
+    }
+    return;
+  }
+
+  async updateField(id: string, {field, value}: {field: string, value: string}) {
+    const user = this.db.find(user => user.id === id);
+    user[field] = value;
+    return user;
+  }
 }

@@ -10,37 +10,68 @@ import {
   HttpCode,
   UsePipes,
   ValidationPipe,
+  HttpStatus,
+  HttpException,
+  ParseUUIDPipe,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+  Delete,
+  Put,
 } from '@nestjs/common';
 import { Response, Request } from 'express';
-import { CreateUserDto } from './dto/createUser.dto';
+import { CreateUserDto } from './dto/createUserDto';
+import { UpdatePasswordDto } from './dto/updatePasswordDto';
 import { UserService } from './user.service';
+import { UserEntity } from './utils/userEntity';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
+  
   @Get()
   async getAll() {
-      return await this.userService.getAllUsers();
-    
+    return await this.userService.getAllUsers();
   }
 
+  
   @Post()
-  // @HttpCode(201)
-  // @UsePipes(new ValidationPipe({transform: true}))
   async createUser(
     @Req() req: Request,
-    @Res({ passthrough: true }) res: Response,
+    // @Res({ passthrough: true }) res: Response,
     @Body() userDTO: CreateUserDto,
+  ): Promise<UserEntity> {
+    const createdUser =  await this.userService.createUser(userDTO);
+    return new UserEntity(createdUser);
+  }
+
+  @Get(':id')
+  async getUser(
+    @Req() req: Request,
+    @Param('id', new ParseUUIDPipe()) id: string):  Promise<UserEntity> {
+      
+    const user = await this.userService.getUser(id);
+    return new UserEntity(user); 
+  }
+  
+  @HttpCode(204)
+  @Delete(':id')
+  async deleteUser(
+    @Req() req: Request,
+    @Param('id', new ParseUUIDPipe()) id: string
   ) {
-    return await this.userService.createUser(userDTO);
+     await this.userService.deleteUser(id);
     
   }
 
-  // @Get(':id')
-  //   async getUser(@Req() req: Request, @Res() res: Response, @Param() pa: any, @Param('id', ParseIntPipe) id: number) {
+  @Put(':id')
+  async updateUserPassword(
+    @Req() req: Request,
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body() passwordDTO: UpdatePasswordDto,
+  ) {
+    return await this.userService.updateUserPassword(id, passwordDTO);
+     
+  }
 
-  //     console.log();
-
-  //     return res.send({data: id, par: pa});
-  //   }
 }
