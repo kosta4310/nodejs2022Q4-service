@@ -24,8 +24,8 @@ import { TrackService } from './track.service';
 
 @Controller('track')
 export class TrackController {
-  constructor(private trackService: TrackService) { }
-  
+  constructor(private trackService: TrackService) {}
+
   @Get()
   async getAll() {
     return await this.trackService.getAll();

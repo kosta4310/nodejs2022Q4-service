@@ -4,6 +4,7 @@ export class CreateAlbumDto {
   @IsString()
   name: string;
 
+  @IsOptional()
   @IsString()
   artistId: string | null; // refers to Artist
 

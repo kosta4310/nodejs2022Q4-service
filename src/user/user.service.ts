@@ -10,8 +10,8 @@ import { User } from './interfaces/user.interface';
 
 @Injectable()
 export class UserService {
-  constructor(private userDb: UserDbService) { }
-  
+  constructor(private userDb: UserDbService) {}
+
   async getAllUsers() {
     return await this.userDb.getAll();
   }
@@ -20,17 +20,17 @@ export class UserService {
     const hashPassword = await toHash(password);
     if (!hashPassword) {
       throw new Error('Error bcrypt');
-    } 
+    }
     password = hashPassword;
     return await this.userDb.createUser({ login, password });
   }
 
-  async  getUser(id: string) {
+  async getUser(id: string) {
     const res = await this.userDb.getUser(id);
     if (res) {
       return res;
     }
-    throw new HttpException(`Record with id === ${id} doesn't exist`, 404)
+    throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
   }
 
   async deleteUser(id: string) {
@@ -38,14 +38,16 @@ export class UserService {
     if (res) {
       return res;
     }
-    throw new HttpException(`Record with id === ${id} doesn't exist`, 404)
+    throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
   }
 
-  async updateUserPassword(id: string, {oldPassword, newPassword}: UpdatePasswordDto) {
-
+  async updateUserPassword(
+    id: string,
+    { oldPassword, newPassword }: UpdatePasswordDto,
+  ) {
     const user = await this.userDb.getUser(id);
     if (!user) {
-      throw new HttpException(`Record with id === ${id} doesn't exist`, 404)
+      throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
     }
 
     const isEquals = await toCompare(oldPassword, user.password);

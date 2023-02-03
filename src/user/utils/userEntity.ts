@@ -7,7 +7,7 @@ export class UserEntity {
   version: number; // integer number, increments on update
   createdAt: number; // timestamp of creation
   updatedAt: number; // timestamp o
-  
+
   @Exclude()
   password: string;
 

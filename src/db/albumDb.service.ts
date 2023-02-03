@@ -13,29 +13,30 @@ export class AlbumDbService {
 
   async create(data: CreateAlbumDto) {
     const id = crypto.randomUUID({ disableEntropyCache: true });
+    if (!data.artistId) data.artistId = null;
     const album = Object.assign(data, { id });
     this.db.push(album);
     return album;
   }
 
   async getOne(id: string) {
-    return this.db.find(track => track.id === id);
+    return this.db.find((album) => album.id === id);
   }
 
   async update(id: string, data: CreateAlbumDto) {
-    const track = this.db.find(track => track.id === id);
+    const album = this.db.find((album) => album.id === id);
     for (const key in data) {
       if (Object.prototype.hasOwnProperty.call(data, key)) {
         const value = data[key];
-        track[key] = value;
+        album[key] = value;
       }
     }
-    return track;
+    return album;
   }
 
   async delete(id: string) {
-    const track = this.db.find(track => track.id === id);
-    this.db = this.db.filter(track => track.id !== id);
-    return track;
+    const album = this.db.find((album) => album.id === id);
+    this.db = this.db.filter((album) => album.id !== id);
+    return album;
   }
 }

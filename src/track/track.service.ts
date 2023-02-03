@@ -5,8 +5,8 @@ import { CreateTrackDto } from './dto/createTrackDto';
 
 @Injectable()
 export class TrackService {
-  constructor(private trackDb: TrackDbService) { }
-  
+  constructor(private trackDb: TrackDbService) {}
+
   async getAll() {
     return await this.trackDb.getAll();
   }
@@ -18,9 +18,9 @@ export class TrackService {
   async getTrack(id: string) {
     const track = await this.trackDb.getOne(id);
     if (!track) {
-      throw new HttpException(`Record with id === ${id} doesn't exist`, 404)
+      throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
     }
-    return track
+    return track;
   }
 
   async updateTrack(id: string, data: CreateTrackDto) {
@@ -28,15 +28,15 @@ export class TrackService {
       const updatedTrack = await this.trackDb.update(id, data);
       return updatedTrack;
     } catch (error) {
-      throw new HttpException(`Record with id === ${id} doesn't exist`, 404)
+      throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
     }
   }
 
   async deleteTrack(id: string) {
     const track = await this.trackDb.delete(id);
     if (!track) {
-      throw new HttpException(`Record with id === ${id} doesn't exist`, 404)
+      throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
     }
     return track;
-  }  
+  }
 }

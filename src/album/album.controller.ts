@@ -24,34 +24,34 @@ import { CreateAlbumDto } from './dto/createAlbumDto';
 
 @Controller('album')
 export class AlbumController {
-  constructor(private albumService: AlbumService) { }
-  
+  constructor(private albumService: AlbumService) {}
+
   @Get()
   async getAll() {
     return await this.albumService.getAll();
   }
 
-  // @Get(':id')
-  // async getAlbum(@Param('id', new ParseUUIDPipe()) id: string) {
-  //   return await this.albumService.getAlbum(id);
-  // }
+  @Get(':id')
+  async getAlbum(@Param('id', new ParseUUIDPipe()) id: string) {
+    return await this.albumService.getAlbum(id);
+  }
 
   @Post()
   async createAlbum(@Body() trackDTO: CreateAlbumDto) {
     return this.albumService.createAlbum(trackDTO);
   }
 
-  // @Put(':id')
-  // async updateAlbum(
-  //   @Body() trackDTO: CreateAlbumDto,
-  //   @Param('id', new ParseUUIDPipe()) id: string,
-  // ) {
-  //   return await this.albumService.updateTrack(id, trackDTO);
-  // }
+  @Put(':id')
+  async updateAlbum(
+    @Body() albumDTO: CreateAlbumDto,
+    @Param('id', new ParseUUIDPipe()) id: string,
+  ) {
+    return await this.albumService.updateAlbum(id, albumDTO);
+  }
 
-  // @HttpCode(204)
-  // @Delete(':id')
-  // async deleteTrack(@Param('id', new ParseUUIDPipe()) id: string) {
-  //   return await this.albumService.deleteTrack(id);
-  // }
+  @HttpCode(204)
+  @Delete(':id')
+  async deleteAlbum(@Param('id', new ParseUUIDPipe()) id: string) {
+    return await this.albumService.deleteAlbum(id);
+  }
 }

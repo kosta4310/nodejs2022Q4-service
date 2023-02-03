@@ -13,17 +13,19 @@ export class TrackDbService {
 
   async create(data: CreateTrackDto) {
     const id = crypto.randomUUID({ disableEntropyCache: true });
+    if (!data.albumId) data.albumId = null;
+    if (!data.artistId) data.artistId = null;
     const track = Object.assign(data, { id });
     this.db.push(track);
     return track;
   }
 
   async getOne(id: string) {
-    return this.db.find(track => track.id === id);
+    return this.db.find((track) => track.id === id);
   }
 
   async update(id: string, data: CreateTrackDto) {
-    const track = this.db.find(track => track.id === id);
+    const track = this.db.find((track) => track.id === id);
     for (const key in data) {
       if (Object.prototype.hasOwnProperty.call(data, key)) {
         const value = data[key];
@@ -34,8 +36,8 @@ export class TrackDbService {
   }
 
   async delete(id: string) {
-    const track = this.db.find(track => track.id === id);
-    this.db = this.db.filter(track => track.id !== id);
+    const track = this.db.find((track) => track.id === id);
+    this.db = this.db.filter((track) => track.id !== id);
     return track;
   }
 }

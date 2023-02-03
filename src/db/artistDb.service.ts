@@ -11,7 +11,7 @@ export class ArtistDbService {
   async getAll() {
     return this.db;
   }
-  
+
   async create(artist: CreateArtistDto) {
     const id = crypto.randomUUID({ disableEntropyCache: true });
     const newArtist = Object.assign(artist, { id });
@@ -20,11 +20,11 @@ export class ArtistDbService {
   }
 
   async getOne(id: string) {
-    return this.db.find(artist => artist.id === id);
+    return this.db.find((artist) => artist.id === id);
   }
 
   async update(id: string, data: UpdateArtistDto) {
-    const artist = this.db.find(artist => artist.id === id);
+    const artist = this.db.find((artist) => artist.id === id);
     for (const key in data) {
       if (Object.prototype.hasOwnProperty.call(data, key)) {
         const value = data[key];
@@ -36,9 +36,8 @@ export class ArtistDbService {
   }
 
   async delete(id: string) {
-    const artist = this.db.find(artist => artist.id === id);
-    this.db = this.db.filter(artist => artist.id !== id);
+    const artist = this.db.find((artist) => artist.id === id);
+    this.db = this.db.filter((artist) => artist.id !== id);
     return artist;
   }
-
 }

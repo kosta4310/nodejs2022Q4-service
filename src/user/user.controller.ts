@@ -27,30 +27,31 @@ import { UserEntity } from './utils/userEntity';
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) { }
-  
+  constructor(private userService: UserService) {}
+
   @Get()
   async getAll() {
     return await this.userService.getAllUsers();
   }
 
-  
   @Post()
   async createUser(@Body() userDTO: CreateUserDto): Promise<UserEntity> {
-    const createdUser =  await this.userService.createUser(userDTO);
+    const createdUser = await this.userService.createUser(userDTO);
     return new UserEntity(createdUser);
   }
 
   @Get(':id')
-  async getUser(@Param('id', new ParseUUIDPipe()) id: string): Promise<UserEntity> {
+  async getUser(
+    @Param('id', new ParseUUIDPipe()) id: string,
+  ): Promise<UserEntity> {
     const user = await this.userService.getUser(id);
-    return new UserEntity(user); 
+    return new UserEntity(user);
   }
-  
+
   @HttpCode(204)
   @Delete(':id')
   async deleteUser(@Param('id', new ParseUUIDPipe()) id: string) {
-     await this.userService.deleteUser(id);
+    await this.userService.deleteUser(id);
   }
 
   @Put(':id')
@@ -58,8 +59,7 @@ export class UserController {
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() passwordDTO: UpdatePasswordDto,
   ): Promise<UserEntity> {
-     const user = await this.userService.updateUserPassword(id, passwordDTO);
-     return new UserEntity(user); 
+    const user = await this.userService.updateUserPassword(id, passwordDTO);
+    return new UserEntity(user);
   }
-
 }

@@ -26,12 +26,12 @@ import { UpdateArtistDto } from './dto/updateArtistDto';
 
 @Controller('artist')
 export class ArtistController {
-  constructor(private artistService: ArtistService) { }
-  
+  constructor(private artistService: ArtistService) {}
+
   @Get()
   async getAll() {
     return await this.artistService.getAllArtists();
-  }  
+  }
 
   @Post()
   async createArtist(@Body() artistDTO: CreateArtistDto) {
@@ -41,7 +41,7 @@ export class ArtistController {
   @Get(':id')
   async getOne(@Param('id', new ParseUUIDPipe()) id: string) {
     return await this.artistService.getArtist(id);
-  } 
+  }
 
   @Put(':id')
   async updateArtist(
@@ -53,10 +53,7 @@ export class ArtistController {
 
   @HttpCode(204)
   @Delete(':id')
-  async deleteArtist(
-    @Param('id', new ParseUUIDPipe()) id: string,
-  ) {
+  async deleteArtist(@Param('id', new ParseUUIDPipe()) id: string) {
     return await this.artistService.deleteArtist(id);
   }
-
 }
