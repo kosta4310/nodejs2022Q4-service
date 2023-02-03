@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateArtistDto } from 'src/artist/dto/createArtistDto';
+import { UpdateArtistDto } from 'src/artist/dto/updateArtistDto';
 const crypto = require('node:crypto');
 import { Artist } from 'src/artist/interfaces/artist.interface';
 
@@ -21,4 +22,23 @@ export class ArtistDbService {
   async getOne(id: string) {
     return this.db.find(artist => artist.id === id);
   }
+
+  async update(id: string, data: UpdateArtistDto) {
+    const artist = this.db.find(artist => artist.id === id);
+    for (const key in data) {
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
+        const value = data[key];
+        artist[key] = value;
+      }
+    }
+
+    return artist;
+  }
+
+  async delete(id: string) {
+    const artist = this.db.find(artist => artist.id === id);
+    this.db = this.db.filter(artist => artist.id !== id);
+    return artist;
+  }
+
 }

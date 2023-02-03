@@ -34,7 +34,7 @@ export class UserDbService {
     return;
   }
 
-  async updateUser(id: string, password) {
+  async updateUser(id: string, password: string) {
     const user = this.db.find(user => user.id === id);
     user.version += 1; 
     user.updatedAt = Date.now();

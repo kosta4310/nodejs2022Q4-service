@@ -6,38 +6,46 @@ import {
   Post,
   Param,
   ParseIntPipe,
+  Body,
+  HttpCode,
+  UsePipes,
+  ValidationPipe,
+  HttpStatus,
+  HttpException,
+  ParseUUIDPipe,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+  Delete,
+  Put,
 } from '@nestjs/common';
 import { Response, Request } from 'express';
+import { CreateTrackDto } from './dto/createTrackDto';
 import { TrackService } from './track.service';
 
 @Controller('track')
 export class TrackController {
-  constructor(private trackService: TrackService) {}
+  constructor(private trackService: TrackService) { }
+  
   @Get()
-  async getAll(@Req() req: Request, @Res() res: Response) {
-    res.statusCode = 300;
-    const r = this.trackService.getAllUsers();
-    console.log(r);
-
-    return res.send(r);
+  async getAll() {
+    return await this.trackService.getAll();
   }
 
   @Get(':id')
-  async getUser(
-    @Req() req: Request,
-    @Res() res: Response,
-    @Param() pa: any,
-    @Param('id', ParseIntPipe) id: number,
-  ) {
-    console.log();
-
-    return res.send({ data: id, par: pa });
+  async getTrack(@Param('id', new ParseUUIDPipe()) id: string) {
+    return await this.trackService.getTrack(id);
   }
 
   @Post()
-  async createUser() {
-    // const r = this.userService.getAllUsers();
-    // console.log(req.headers);
-    return this.trackService.createUser('user3');
+  async createTrack(@Body() trackDTO: CreateTrackDto) {
+    return this.trackService.createTrack(trackDTO);
+  }
+
+  @Put(':id')
+  async updateTrack(
+    @Body() trackDTO: CreateTrackDto,
+    @Param('id', new ParseUUIDPipe()) id: string,
+  ) {
+    return await this.trackService.updateTrack(id, trackDTO);
   }
 }
