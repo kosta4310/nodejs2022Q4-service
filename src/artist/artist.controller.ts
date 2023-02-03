@@ -33,8 +33,13 @@ export class ArtistController {
   }  
 
   @Post()
-  async createArtist(@Body() artistDTO: CreateArtistDto) {
+  async createArtist(
+    @Req() req: Request,
+    // @Res({ passthrough: true }) res: Response,
+    @Body() artistDTO: CreateArtistDto,
+  ) {
     return await this.artistService.createArtist(artistDTO);
+     
   }
 
   @Get(':id')
