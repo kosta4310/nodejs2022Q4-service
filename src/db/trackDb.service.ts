@@ -42,7 +42,13 @@ export class TrackDbService {
   }
 
   async findMany(key: string, value: any) {
-    const res = this.db.filter(track => track[key] === value);
+    let res: Track[];
+    if (typeof value === 'string') {
+      res = this.db.filter(track => track[key] === value);
+    } else if(value.isArray()) {
+      res = this.db.filter(track => value.includes(track[key]));
+    }
+    
     return res;
   }
 }

@@ -1,5 +1,4 @@
 import { Exclude } from 'class-transformer';
-import { User } from '../interfaces/user.interface';
 
 export class UserEntity {
   id: string; // uuid v4

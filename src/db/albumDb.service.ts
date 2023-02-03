@@ -42,7 +42,13 @@ export class AlbumDbService {
   }
 
   async findMany(key: string, value: any) {
-    const res = this.db.filter(album => album[key] === value);
+    let res: Album[];
+    if (typeof value === 'string') {
+      res = this.db.filter(album => album[key] === value);
+    } else if(value.isArray()) {
+      res = this.db.filter(album => value.includes(album[key]));
+    }
+    
     return res;
   }
 }
