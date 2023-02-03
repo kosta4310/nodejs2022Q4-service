@@ -45,7 +45,7 @@ export class AlbumDbService {
     let res: Album[];
     if (typeof value === 'string') {
       res = this.db.filter(album => album[key] === value);
-    } else if(value.isArray()) {
+    } else if (Array.isArray(value)) {
       res = this.db.filter(album => value.includes(album[key]));
     }
     

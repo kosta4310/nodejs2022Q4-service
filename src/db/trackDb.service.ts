@@ -45,7 +45,7 @@ export class TrackDbService {
     let res: Track[];
     if (typeof value === 'string') {
       res = this.db.filter(track => track[key] === value);
-    } else if(value.isArray()) {
+    } else if(Array.isArray(value)) {
       res = this.db.filter(track => value.includes(track[key]));
     }
     
