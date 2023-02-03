@@ -13,7 +13,7 @@ export class UserDbService {
   async createUser(user: Pick<User, 'login' | 'password'>): Promise<User> {
     const id = crypto.randomUUID({ disableEntropyCache: true });
     const createdAt = Date.now();
-    const updatedAt = Date.now();
+    const updatedAt = createdAt;
     const version = 1;
     const newUser = Object.assign(user, { id, createdAt, updatedAt, version });
     this.db.push(newUser);

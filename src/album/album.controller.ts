@@ -21,6 +21,7 @@ import {
 import { Response, Request } from 'express';
 import { AlbumService } from './album.service';
 import { CreateAlbumDto } from './dto/createAlbumDto';
+import { UpdateAlbumDto } from './dto/updateAlbumDto';
 
 @Controller('album')
 export class AlbumController {
@@ -43,7 +44,7 @@ export class AlbumController {
 
   @Put(':id')
   async updateAlbum(
-    @Body() albumDTO: CreateAlbumDto,
+    @Body() albumDTO: UpdateAlbumDto,
     @Param('id', new ParseUUIDPipe()) id: string,
   ) {
     return await this.albumService.updateAlbum(id, albumDTO);

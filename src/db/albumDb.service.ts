@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAlbumDto } from 'src/album/dto/createAlbumDto';
+import { UpdateAlbumDto } from 'src/album/dto/updateAlbumDto';
 import { Album } from 'src/album/interfaces/album.interface';
 const crypto = require('node:crypto');
 
@@ -23,7 +24,7 @@ export class AlbumDbService {
     return this.db.find((album) => album.id === id);
   }
 
-  async update(id: string, data: CreateAlbumDto) {
+  async update(id: string, data: UpdateAlbumDto) {
     const album = this.db.find((album) => album.id === id);
     for (const key in data) {
       if (Object.prototype.hasOwnProperty.call(data, key)) {
@@ -38,5 +39,10 @@ export class AlbumDbService {
     const album = this.db.find((album) => album.id === id);
     this.db = this.db.filter((album) => album.id !== id);
     return album;
+  }
+
+  async findMany(key: string, value: any) {
+    const res = this.db.filter(album => album[key] === value);
+    return res;
   }
 }

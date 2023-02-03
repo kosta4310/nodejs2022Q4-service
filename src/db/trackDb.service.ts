@@ -40,4 +40,9 @@ export class TrackDbService {
     this.db = this.db.filter((track) => track.id !== id);
     return track;
   }
+
+  async findMany(key: string, value: any) {
+    const res = this.db.filter(track => track[key] === value);
+    return res;
+  }
 }
