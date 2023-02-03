@@ -48,4 +48,10 @@ export class TrackController {
   ) {
     return await this.trackService.updateTrack(id, trackDTO);
   }
+
+  @HttpCode(204)
+  @Delete(':id')
+  async deleteTrack(@Param('id', new ParseUUIDPipe()) id: string) {
+    return await this.trackService.deleteTrack(id);
+  }
 }

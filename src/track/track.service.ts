@@ -31,4 +31,12 @@ export class TrackService {
       throw new HttpException(`Record with id === ${id} doesn't exist`, 404)
     }
   }
+
+  async deleteTrack(id: string) {
+    const track = await this.trackDb.delete(id);
+    if (!track) {
+      throw new HttpException(`Record with id === ${id} doesn't exist`, 404)
+    }
+    return track;
+  }  
 }

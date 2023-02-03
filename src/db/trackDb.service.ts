@@ -30,7 +30,12 @@ export class TrackDbService {
         track[key] = value;
       }
     }
+    return track;
+  }
 
+  async delete(id: string) {
+    const track = this.db.find(track => track.id === id);
+    this.db = this.db.filter(track => track.id !== id);
     return track;
   }
 }
