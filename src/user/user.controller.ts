@@ -36,38 +36,25 @@ export class UserController {
 
   
   @Post()
-  async createUser(
-    @Req() req: Request,
-    // @Res({ passthrough: true }) res: Response,
-    @Body() userDTO: CreateUserDto,
-  ): Promise<UserEntity> {
+  async createUser(@Body() userDTO: CreateUserDto): Promise<UserEntity> {
     const createdUser =  await this.userService.createUser(userDTO);
     return new UserEntity(createdUser);
   }
 
   @Get(':id')
-  async getUser(
-    @Req() req: Request,
-    @Param('id', new ParseUUIDPipe()) id: string
-  ): Promise<UserEntity> {
-      
+  async getUser(@Param('id', new ParseUUIDPipe()) id: string): Promise<UserEntity> {
     const user = await this.userService.getUser(id);
     return new UserEntity(user); 
   }
   
   @HttpCode(204)
   @Delete(':id')
-  async deleteUser(
-    @Req() req: Request,
-    @Param('id', new ParseUUIDPipe()) id: string
-  ) {
+  async deleteUser(@Param('id', new ParseUUIDPipe()) id: string) {
      await this.userService.deleteUser(id);
-    
   }
 
   @Put(':id')
   async updateUserPassword(
-    @Req() req: Request,
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() passwordDTO: UpdatePasswordDto,
   ): Promise<UserEntity> {

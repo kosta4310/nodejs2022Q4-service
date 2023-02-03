@@ -21,10 +21,7 @@ export class UserService {
     if (!hashPassword) {
       throw new Error('Error bcrypt');
     } 
-
     password = hashPassword;
-    
-    
     return await this.userDb.createUser({ login, password });
   }
 
