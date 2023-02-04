@@ -1,6 +1,4 @@
-import { HttpException, Inject, Injectable } from '@nestjs/common';
-const bcrypt = require('bcrypt');
-import { DbModule } from 'src/db/db.module';
+import { HttpException, Injectable } from '@nestjs/common';
 import { UserDbService } from 'src/db/userDb.service';
 import { toCompare } from 'src/utils/toCompare';
 import { toHash } from 'src/utils/toHash';

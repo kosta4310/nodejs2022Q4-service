@@ -1,15 +1,14 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { FavoritesDbService } from 'src/db/favoritesDb.service';
 import { TrackDbService } from 'src/db/trackDb.service';
-import { UserDbService } from 'src/db/userDb.service';
 import { CreateTrackDto } from './dto/createTrackDto';
 
 @Injectable()
 export class TrackService {
   constructor(
     private trackDb: TrackDbService,
-    private favDb: FavoritesDbService
-  ) { }
+    private favDb: FavoritesDbService,
+  ) {}
 
   async getAll() {
     return await this.trackDb.getAll();

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-const crypto = require('node:crypto');
+import crypto from 'node:crypto';
 import { CreateTrackDto } from 'src/track/dto/createTrackDto';
 import { Track } from 'src/track/interfaces/track.interface';
 
@@ -44,11 +44,11 @@ export class TrackDbService {
   async findMany(key: string, value: any) {
     let res: Track[];
     if (typeof value === 'string') {
-      res = this.db.filter(track => track[key] === value);
-    } else if(Array.isArray(value)) {
-      res = this.db.filter(track => value.includes(track[key]));
+      res = this.db.filter((track) => track[key] === value);
+    } else if (Array.isArray(value)) {
+      res = this.db.filter((track) => value.includes(track[key]));
     }
-    
+
     return res;
   }
 }

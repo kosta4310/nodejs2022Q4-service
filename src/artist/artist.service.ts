@@ -14,8 +14,8 @@ export class ArtistService {
     private artistDb: ArtistDbService,
     private albumDb: AlbumDbService,
     private trackDb: TrackDbService,
-    private favDb: FavoritesDbService
-  ) { }
+    private favDb: FavoritesDbService,
+  ) {}
 
   async getAllArtists() {
     return await this.artistDb.getAll();
@@ -53,8 +53,10 @@ export class ArtistService {
     this.favDb.delete('artists', id);
 
     const entities = await Promise.all([album, track]);
-    entities.forEach(entity => entity.forEach((entity: Album | Track) => entity.artistId = null));
-    
+    entities.forEach((entity) =>
+      entity.forEach((entity: Album | Track) => (entity.artistId = null)),
+    );
+
     return artist;
   }
 }

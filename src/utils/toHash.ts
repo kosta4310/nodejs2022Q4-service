@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
 
 export async function toHash(myPlaintextPassword: string): Promise<string> {
   return await new Promise((res, rej) => {

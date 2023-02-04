@@ -1,24 +1,14 @@
 import {
   Controller,
   Get,
-  Res,
-  Req,
   Post,
   Param,
-  ParseIntPipe,
   Body,
   HttpCode,
-  UsePipes,
-  ValidationPipe,
-  HttpStatus,
-  HttpException,
   ParseUUIDPipe,
-  UseInterceptors,
-  ClassSerializerInterceptor,
   Delete,
   Put,
 } from '@nestjs/common';
-import { Response, Request } from 'express';
 import { CreateTrackDto } from './dto/createTrackDto';
 import { TrackService } from './track.service';
 

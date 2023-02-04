@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateArtistDto } from 'src/artist/dto/createArtistDto';
 import { UpdateArtistDto } from 'src/artist/dto/updateArtistDto';
-const crypto = require('node:crypto');
+import crypto from 'node:crypto';
 import { Artist } from 'src/artist/interfaces/artist.interface';
 
 @Injectable()
@@ -44,11 +44,11 @@ export class ArtistDbService {
   async findMany(key: string, value: any) {
     let res: Artist[];
     if (typeof value === 'string') {
-      res = this.db.filter(artist => artist[key] === value);
-    } else if(Array.isArray(value)) {
-      res = this.db.filter(artist => value.includes(artist[key]));
+      res = this.db.filter((artist) => artist[key] === value);
+    } else if (Array.isArray(value)) {
+      res = this.db.filter((artist) => value.includes(artist[key]));
     }
-    
+
     return res;
   }
 }

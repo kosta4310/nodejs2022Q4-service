@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Favorites } from 'src/favorites/interfaces/favofites.interface';
-const crypto = require('node:crypto');
 
 @Injectable()
 export class FavoritesDbService {
   private db: Favorites = {
     artists: [], // favorite artists ids
     albums: [], // favorite albums ids
-    tracks: [] // favorite tracks ids
+    tracks: [], // favorite tracks ids
   };
 
   async getAll() {
@@ -16,7 +15,7 @@ export class FavoritesDbService {
 
   async add(key: string, id: string) {
     this.db[key].push(id);
-    return {id, success: true};
+    return { id, success: true };
   }
 
   async getOne(key: string, id: string) {

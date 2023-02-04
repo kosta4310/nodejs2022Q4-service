@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateAlbumDto } from 'src/album/dto/createAlbumDto';
 import { UpdateAlbumDto } from 'src/album/dto/updateAlbumDto';
 import { Album } from 'src/album/interfaces/album.interface';
-const crypto = require('node:crypto');
+import crypto from 'node:crypto';
 
 @Injectable()
 export class AlbumDbService {
@@ -44,11 +44,11 @@ export class AlbumDbService {
   async findMany(key: string, value: any) {
     let res: Album[];
     if (typeof value === 'string') {
-      res = this.db.filter(album => album[key] === value);
+      res = this.db.filter((album) => album[key] === value);
     } else if (Array.isArray(value)) {
-      res = this.db.filter(album => value.includes(album[key]));
+      res = this.db.filter((album) => value.includes(album[key]));
     }
-    
+
     return res;
   }
 }

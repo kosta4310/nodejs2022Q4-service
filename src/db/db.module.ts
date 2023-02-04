@@ -7,7 +7,19 @@ import { UserDbService } from './userDb.service';
 
 @Global()
 @Module({
-  providers: [UserDbService, TrackDbService, ArtistDbService, AlbumDbService, FavoritesDbService],
-  exports: [UserDbService, TrackDbService, ArtistDbService, AlbumDbService, FavoritesDbService],
+  providers: [
+    UserDbService,
+    TrackDbService,
+    ArtistDbService,
+    AlbumDbService,
+    FavoritesDbService,
+  ],
+  exports: [
+    UserDbService,
+    TrackDbService,
+    ArtistDbService,
+    AlbumDbService,
+    FavoritesDbService,
+  ],
 })
 export class DbModule {}

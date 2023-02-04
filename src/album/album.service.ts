@@ -1,9 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { CreateArtistDto } from 'src/artist/dto/createArtistDto';
 import { AlbumDbService } from 'src/db/albumDb.service';
 import { FavoritesDbService } from 'src/db/favoritesDb.service';
 import { TrackDbService } from 'src/db/trackDb.service';
-import { UserDbService } from 'src/db/userDb.service';
 import { CreateAlbumDto } from './dto/createAlbumDto';
 import { UpdateAlbumDto } from './dto/updateAlbumDto';
 
@@ -12,8 +10,8 @@ export class AlbumService {
   constructor(
     private albumDb: AlbumDbService,
     private trackDb: TrackDbService,
-    private favDb: FavoritesDbService
-  ) { }
+    private favDb: FavoritesDbService,
+  ) {}
 
   async getAll() {
     return await this.albumDb.getAll();
@@ -48,7 +46,9 @@ export class AlbumService {
     const track = this.trackDb.findMany('albumId', id);
     this.favDb.delete('albums', id);
     const entities = await Promise.all([track]);
-    entities.forEach(entity => entity.forEach((entity)  => entity.albumId = null));
+    entities.forEach((entity) =>
+      entity.forEach((entity) => (entity.albumId = null)),
+    );
     return album;
   }
 }

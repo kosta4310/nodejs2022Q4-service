@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-const crypto = require('node:crypto');
+import crypto from 'node:crypto';
 import { User } from 'src/user/interfaces/user.interface';
 
 @Injectable()

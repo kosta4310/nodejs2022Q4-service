@@ -1,4 +1,4 @@
-import { forwardRef, HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { AlbumDbService } from 'src/db/albumDb.service';
 import { ArtistDbService } from 'src/db/artistDb.service';
 import { FavoritesDbService } from 'src/db/favoritesDb.service';
@@ -10,16 +10,15 @@ export class FavoritesService {
     private favoritesDb: FavoritesDbService,
     private trackDb: TrackDbService,
     private albumDb: AlbumDbService,
-    private artistDb: ArtistDbService
-  ) { }
+    private artistDb: ArtistDbService,
+  ) {}
 
   async getAll() {
     const favofites = await this.favoritesDb.getAll();
     const albums = await this.albumDb.findMany('id', favofites.albums);
     const tracks = await this.trackDb.findMany('id', favofites.tracks);
     const artists = await this.artistDb.findMany('id', favofites.artists);
-    return { albums, tracks, artists};
-    
+    return { albums, tracks, artists };
   }
 
   async addTrack(id: string) {
@@ -33,7 +32,10 @@ export class FavoritesService {
   async deleteTrack(id: string) {
     const res = await this.favoritesDb.delete('tracks', id);
     if (!res) {
-      throw new HttpException(`Record with id === ${id} doesn't exist in favorites`, 404);
+      throw new HttpException(
+        `Record with id === ${id} doesn't exist in favorites`,
+        404,
+      );
     }
     return res;
   }
@@ -49,7 +51,10 @@ export class FavoritesService {
   async deleteAlbum(id: string) {
     const res = await this.favoritesDb.delete('albums', id);
     if (!res) {
-      throw new HttpException(`Record with id === ${id} doesn't exist in favorites`, 404);
+      throw new HttpException(
+        `Record with id === ${id} doesn't exist in favorites`,
+        404,
+      );
     }
     return res;
   }
@@ -65,7 +70,10 @@ export class FavoritesService {
   async deleteArtist(id: string) {
     const res = await this.favoritesDb.delete('artists', id);
     if (!res) {
-      throw new HttpException(`Record with id === ${id} doesn't exist in favorites`, 404);
+      throw new HttpException(
+        `Record with id === ${id} doesn't exist in favorites`,
+        404,
+      );
     }
     return res;
   }
