@@ -5,10 +5,12 @@
 - Git - [Download & Install Git](https://git-scm.com/downloads).
 - Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
 
-## Downloading
+## Downloading, change directory and change branch
 
 ```
-git clone {repository URL}
+git clone https://github.com/kosta4310/nodejs2022Q4-service.git
+cd nodejs2022Q4-service
+git checkout develop
 ```
 
 ## Installing NPM modules
@@ -41,18 +43,6 @@ To run only one of all test suites
 
 ```
 npm run test -- <path to suite>
-```
-
-To run all test with authorization
-
-```
-npm run test:auth
-```
-
-To run only specific test suite with authorization
-
-```
-npm run test:auth -- <path to suite>
 ```
 
 ### Auto-fix and format
