@@ -1,8 +1,8 @@
-import bcrypt from 'bcrypt';
+import {hash} from 'bcrypt';
 
 export async function toHash(myPlaintextPassword: string): Promise<string> {
   return await new Promise((res, rej) => {
-    bcrypt.hash(myPlaintextPassword, 10, function (err, hash) {
+    hash(myPlaintextPassword, 10, function (err, hash) {
       if (err) {
         rej('error bcrypt');
       }

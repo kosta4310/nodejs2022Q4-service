@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import crypto from 'node:crypto';
+import {randomUUID} from 'node:crypto';
 import { CreateTrackDto } from 'src/track/dto/createTrackDto';
 import { Track } from 'src/track/interfaces/track.interface';
 
@@ -12,7 +12,7 @@ export class TrackDbService {
   }
 
   async create(data: CreateTrackDto) {
-    const id = crypto.randomUUID({ disableEntropyCache: true });
+    const id = randomUUID({ disableEntropyCache: true });
     if (!data.albumId) data.albumId = null;
     if (!data.artistId) data.artistId = null;
     const track = Object.assign(data, { id });

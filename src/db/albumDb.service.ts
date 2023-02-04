@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateAlbumDto } from 'src/album/dto/createAlbumDto';
 import { UpdateAlbumDto } from 'src/album/dto/updateAlbumDto';
 import { Album } from 'src/album/interfaces/album.interface';
-import crypto from 'node:crypto';
+import {randomUUID} from 'node:crypto';
 
 @Injectable()
 export class AlbumDbService {
@@ -13,7 +13,7 @@ export class AlbumDbService {
   }
 
   async create(data: CreateAlbumDto) {
-    const id = crypto.randomUUID({ disableEntropyCache: true });
+    const id = randomUUID({ disableEntropyCache: true });
     if (!data.artistId) data.artistId = null;
     const album = Object.assign(data, { id });
     this.db.push(album);
