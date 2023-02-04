@@ -40,4 +40,15 @@ export class ArtistDbService {
     this.db = this.db.filter((artist) => artist.id !== id);
     return artist;
   }
+
+  async findMany(key: string, value: any) {
+    let res: Artist[];
+    if (typeof value === 'string') {
+      res = this.db.filter(artist => artist[key] === value);
+    } else if(Array.isArray(value)) {
+      res = this.db.filter(artist => value.includes(artist[key]));
+    }
+    
+    return res;
+  }
 }

@@ -32,4 +32,15 @@ export class FavoritesController {
     return await this.favoritesService.deleteAlbum(id);
   }
 
+  @Post('artist/:id')
+  async addArtist(@Param('id', new ParseUUIDPipe()) id: string) {
+    return await this.favoritesService.addArtist(id);
+  }
+
+  @HttpCode(204)
+  @Delete('artist/:id')
+  async deleteArtist(@Param('id', new ParseUUIDPipe()) id: string) {
+    return await this.favoritesService.deleteArtist(id);
+  }
+
 }

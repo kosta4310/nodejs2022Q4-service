@@ -1,11 +1,15 @@
 import { HttpException, Injectable } from '@nestjs/common';
+import { FavoritesDbService } from 'src/db/favoritesDb.service';
 import { TrackDbService } from 'src/db/trackDb.service';
 import { UserDbService } from 'src/db/userDb.service';
 import { CreateTrackDto } from './dto/createTrackDto';
 
 @Injectable()
 export class TrackService {
-  constructor(private trackDb: TrackDbService) {}
+  constructor(
+    private trackDb: TrackDbService,
+    private favDb: FavoritesDbService
+  ) { }
 
   async getAll() {
     return await this.trackDb.getAll();
@@ -37,6 +41,8 @@ export class TrackService {
     if (!track) {
       throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
     }
+    this.favDb.delete('tracks', id);
+
     return track;
   }
 }
