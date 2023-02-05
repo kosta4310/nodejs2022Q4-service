@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateAlbumDto } from 'src/album/dto/createAlbumDto';
 import { UpdateAlbumDto } from 'src/album/dto/updateAlbumDto';
 import { Album } from 'src/album/interfaces/album.interface';
-import {randomUUID} from 'node:crypto';
+import { randomUUID } from 'node:crypto';
 
 @Injectable()
 export class AlbumDbService {

@@ -1,4 +1,4 @@
-import {compare} from 'bcrypt';
+import { compare } from 'bcrypt';
 
 export async function toCompare(
   myPlaintextPassword: string,
