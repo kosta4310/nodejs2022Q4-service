@@ -50,7 +50,7 @@ export class UserService {
 
     const isEquals = await toCompare(oldPassword, user.password);
     if (!isEquals) {
-      throw new HttpException(`oldPassword ${oldPassword} is wrong`, 403);
+      throw new HttpException(`oldPassword is wrong`, 403);
     }
 
     const hashNewPassword = await toHash(newPassword);
