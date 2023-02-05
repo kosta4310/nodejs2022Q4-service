@@ -5,7 +5,7 @@ info:
   version: 1.0.0
 
 servers:
-  - url: /api
+  - url: /
 
 components:
   schemas:
@@ -131,7 +131,7 @@ components:
     BadRequest:
       description: Bad request. Body does not contain required fields
     IdNotUUID:
-      description: UserId is invalid (not uuid)
+      description: The id is invalid (not uuid)
     RecordNotExist:
       description: Record with the id doesn't exist
     RecordNotFavorite:
@@ -152,7 +152,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/UserResponse'
-       
+
     post:
       tags:
         - Users
@@ -168,9 +168,11 @@ paths:
               properties:
                 login:
                   type: string
+                  example: User1
                   description: The user's login
                 password:
                   type: string
+                  example: 123
                   description: The user's password
               required:
                 - login
@@ -258,7 +260,7 @@ paths:
         400:
           $ref: '#/components/responses/IdNotUUID'
         403:
-          description: oldPassowrd is wrong
+          description: OldPassowrd is wrong
         404:
           $ref: '#/components/responses/RecordNotExist'
     delete:
@@ -302,6 +304,7 @@ paths:
               properties:
                 name:
                   type: string
+                  example: Track1
                 artistId:
                   type: string
                   format: uuid
@@ -312,6 +315,7 @@ paths:
                   nullable: true
                 duration:
                   type: integer
+                  example: 300
                   description: In seconds
               required:
                 - name
@@ -326,7 +330,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Track'
         400:
-          $ref: '#/components/responses/BadRequest'        
+          $ref: '#/components/responses/BadRequest'
   /track/{id}:
     parameters:
       - name: id
@@ -455,8 +459,10 @@ paths:
               properties:
                 name:
                   type: string
+                  example: Album1
                 year:
                   type: integer
+                  example: 2023
                 artistId:
                   type: string
                   format: uuid
@@ -467,7 +473,7 @@ paths:
                 - artistId
       responses:
         201:
-          description: Almub is created
+          description: Album is created
           content:
             application/json:
               schema:
@@ -495,9 +501,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Album'
         400:
-           $ref: '#/components/responses/IdNotUUID'
+          $ref: '#/components/responses/IdNotUUID'
         404:
-           $ref: '#/components/responses/RecordNotExist'
+          $ref: '#/components/responses/RecordNotExist'
     put:
       tags:
         - Albums
@@ -530,9 +536,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Album'
         400:
-           $ref: '#/components/responses/IdNotUUID'
+          $ref: '#/components/responses/IdNotUUID'
         404:
-           $ref: '#/components/responses/RecordNotExist'
+          $ref: '#/components/responses/RecordNotExist'
     delete:
       tags:
         - Albums
@@ -542,9 +548,9 @@ paths:
         204:
           description: Deleted succesfully
         400:
-           $ref: '#/components/responses/IdNotUUID'
+          $ref: '#/components/responses/IdNotUUID'
         404:
-           $ref: '#/components/responses/RecordNotExist'
+          $ref: '#/components/responses/RecordNotExist'
   /artist:
     get:
       tags:
@@ -574,6 +580,7 @@ paths:
               properties:
                 name:
                   type: string
+                  example: Justin Timberlake
                 grammy:
                   type: boolean
               required:
@@ -587,7 +594,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Artist'
         400:
-           $ref: '#/components/responses/BadRequest'
+          $ref: '#/components/responses/BadRequest'
   /artist/{id}:
     parameters:
       - name: id
@@ -609,14 +616,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Artist'
         400:
-           $ref: '#/components/responses/IdNotUUID'
+          $ref: '#/components/responses/IdNotUUID'
         404:
-           $ref: '#/components/responses/RecordNotExist'
+          $ref: '#/components/responses/RecordNotExist'
     put:
       tags:
         - Artists
       summary: Update artist information
-      description: Update artist information by UUID
+      description: Update artist information by id
       requestBody:
         required: true
         content:
@@ -639,9 +646,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Artist'
         400:
-           $ref: '#/components/responses/IdNotUUID'
+          $ref: '#/components/responses/IdNotUUID'
         404:
-           $ref: '#/components/responses/RecordNotExist'
+          $ref: '#/components/responses/RecordNotExist'
     delete:
       tags:
         - Artists
@@ -651,9 +658,9 @@ paths:
         204:
           description: Delelted succesfully
         400:
-           $ref: '#/components/responses/IdNotUUID'
+          $ref: '#/components/responses/IdNotUUID'
         404:
-           $ref: '#/components/responses/RecordNotExist'
+          $ref: '#/components/responses/RecordNotExist'
   /favs:
     get:
       tags:
@@ -684,9 +691,9 @@ paths:
         201:
           description: Added succesfully
         400:
-           $ref: '#/components/responses/IdNotUUID'
+          $ref: '#/components/responses/IdNotUUID'
         422:
-           $ref: '#/components/responses/RecordNotExist'
+          $ref: '#/components/responses/RecordNotExist'
     delete:
       tags:
         - Favorites
@@ -696,9 +703,9 @@ paths:
         204:
           description: Deleted succesfully
         400:
-           $ref: '#/components/responses/IdNotUUID'
+          $ref: '#/components/responses/IdNotUUID'
         404:
-           $ref: '#/components/responses/RecordNotFavorite'
+          $ref: '#/components/responses/RecordNotFavorite'
   /favs/album/{id}:
     parameters:
       - name: id
@@ -716,9 +723,9 @@ paths:
         201:
           description: Added succesfully
         400:
-           $ref: '#/components/responses/IdNotUUID'
+          $ref: '#/components/responses/IdNotUUID'
         422:
-           $ref: '#/components/responses/RecordNotExist'
+          $ref: '#/components/responses/RecordNotExist'
     delete:
       tags:
         - Favorites
@@ -728,9 +735,9 @@ paths:
         204:
           description: Deleted succesfully
         400:
-           $ref: '#/components/responses/IdNotUUID'
+          $ref: '#/components/responses/IdNotUUID'
         404:
-           $ref: '#/components/responses/RecordNotFavorite'
+          $ref: '#/components/responses/RecordNotFavorite'
   /favs/artist/{id}:
     parameters:
       - name: id
@@ -748,9 +755,9 @@ paths:
         201:
           description: Added succesfully
         400:
-           $ref: '#/components/responses/IdNotUUID'
+          $ref: '#/components/responses/IdNotUUID'
         422:
-           $ref: '#/components/responses/RecordNotExist'
+          $ref: '#/components/responses/RecordNotExist'
     delete:
       tags:
         - Favorites
@@ -760,6 +767,6 @@ paths:
         204:
           description: Deleted succesfully
         400:
-           $ref: '#/components/responses/IdNotUUID'
+          $ref: '#/components/responses/IdNotUUID'
         404:
-           $ref: '#/components/responses/RecordNotFavorite'
+          $ref: '#/components/responses/RecordNotFavorite'
