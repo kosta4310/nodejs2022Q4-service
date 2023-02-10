@@ -1,0 +1,42 @@
+version: "3.9"
+services:
+  app:
+    image: app
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - postgres
+    environment:
+      - PORT=${PORT}
+    volumes:
+      - ./src:/app/src
+    networks:
+      - node-service-2022Q4
+    restart: always
+  postgres:
+    image: database
+    ports:
+      - ${POSTGRES_PORT}:5432
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+      - pglogs:/var/log/postgresql
+    networks:
+      - node-service-2022Q4
+    restart: always
+volumes:
+  pgdata:
+  pglogs:
+networks:
+  node-service-2022Q4:
+      
+
+
+
+
+
+
+
