@@ -1,7 +1,8 @@
 version: "3.9"
 services:
   app:
-    image: app
+    container_name: app
+    build: .
     ports:
       - ${PORT}:${PORT}
     depends_on:
