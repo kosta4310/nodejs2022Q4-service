@@ -2,7 +2,7 @@ version: "3.9"
 services:
   app:
     container_name: app
-    build: .
+    image: nodejs2022q4-service-app:latest
     ports:
       - ${PORT}:${PORT}
     depends_on:
@@ -20,7 +20,7 @@ services:
 
   postgres15:
     container_name: postgres15
-    build: ./database/
+    image: nodejs2022q4-service-postgres15:latest
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
