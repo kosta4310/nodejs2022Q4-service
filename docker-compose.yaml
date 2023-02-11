@@ -6,15 +6,16 @@ services:
     ports:
       - ${PORT}:${PORT}
     depends_on:
-      - postgres
+      - postgres15
     environment:
       - PORT=${PORT}
     volumes:
       - ./src:/app/src
     networks:
-      - node-service-2022Q4
+      - custom_network
     restart: always
-  postgres:
+
+  postgres15:
     image: database
     ports:
       - ${POSTGRES_PORT}:5432
@@ -26,13 +27,27 @@ services:
       - pgdata:/var/lib/postgresql/data/
       - pglogs:/var/log/postgresql
     networks:
-      - node-service-2022Q4
+      - custom_network
     restart: always
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:6.20
+    environment:
+      PGADMIN_DEFAULT_EMAIL: realanka77@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: kos
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - 5050:80
+    networks:
+      - custom_network
+    restart: always
+
 volumes:
   pgdata:
   pglogs:
 networks:
-  node-service-2022Q4:
+  custom_network:
       
 
 
