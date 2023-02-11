@@ -6,9 +6,9 @@ import { TypeOrmModule as NestTypeOrmModule } from '@nestjs/typeorm';
     NestTypeOrmModule.forRoot({
       type: 'postgres',
       host: 'postgres15',
-      port: 5432,
-      username: 'kos',
-      password: 'kos',
+      port: Number(process.env.POSTGRES_PORT),
+      username: process.env.POSTGRES_USER,
+      password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
       synchronize: true,
       entities: ['dist/entities/**/*.entity.js'],

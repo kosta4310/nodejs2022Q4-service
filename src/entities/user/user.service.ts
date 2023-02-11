@@ -1,68 +1,59 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { genSalt, hash } from 'bcrypt';
-
-import { User } from './user.entity';
-import { UpdateUserDto } from './dto/updateUser.dto';
+import { HttpException, Injectable } from '@nestjs/common';
+import { UserDbService } from 'src/db/userDb.service';
+import { toCompare } from 'src/utils/toCompare';
+import { toHash } from 'src/utils/toHash';
+import { CreateUserDto } from './dto/createUserDto';
+import { UpdatePasswordDto } from './dto/updatePasswordDto';
+import { User } from './interfaces/user.interface';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
-  ) {}
+  constructor(private userDb: UserDbService) {}
 
-  availableFields = ['nameFirst', 'nameLast', 'email', 'gender', 'birthDate'];
-
-  // Filter body's fileds from available fields list
-  private filterFields(body: { [k: string]: any }) {
-    const filteredBody: { [k: string]: any } = {};
-
-    Object.keys(body).filter((k) => {
-      if (this.availableFields.includes(k)) {
-        filteredBody[k] = body[k];
-      }
-    });
-
-    return filteredBody;
+  async getAllUsers() {
+    return await this.userDb.getAll();
   }
 
-  // Register new user
-  public async createUser(userData: any) {
-    const salt = await genSalt(10);
-
-    const hashedPassword = await hash(userData.password, salt);
-
-    const newUser = this.userRepository.create({
-      ...userData,
-      password: hashedPassword,
-    });
-
-    return await this.userRepository.save(newUser);
+  async createUser({ login, password }: CreateUserDto): Promise<User> {
+    const hashPassword = await toHash(password);
+    if (!hashPassword) {
+      throw new Error('Error bcrypt');
+    }
+    password = hashPassword;
+    return await this.userDb.createUser({ login, password });
   }
 
-  // Get all users
-  public async getAllUsers() {
-    return await this.userRepository.find({
-      select: this.availableFields as any,
-    });
+  async getUser(id: string) {
+    const res = await this.userDb.getUser(id);
+    if (res) {
+      return res;
+    }
+    throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
   }
 
-  // Get user data by id
-  public async getUserData(id: number) {
-    return await this.userRepository.findOne({
-      where: { id },
-      select: this.availableFields as any,
-    });
+  async deleteUser(id: string) {
+    const res = await this.userDb.deleteUser(id);
+    if (res) {
+      return res;
+    }
+    throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
   }
 
-  // Update user data whole
-  public async updateUserData(id: number, body: UpdateUserDto) {
-    return await this.userRepository.update({ id }, this.filterFields(body));
-  }
+  async updateUserPassword(
+    id: string,
+    { oldPassword, newPassword }: UpdatePasswordDto,
+  ) {
+    const user = await this.userDb.getUser(id);
+    if (!user) {
+      throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
+    }
 
-  // Delete user by id
-  public async deleteUser(id: number) {
-    return await this.userRepository.delete(id);
+    const isEquals = await toCompare(oldPassword, user.password);
+    if (!isEquals) {
+      throw new HttpException(`oldPassword is wrong`, 403);
+    }
+
+    const hashNewPassword = await toHash(newPassword);
+    return await this.userDb.updateUser(id, hashNewPassword);
   }
 }

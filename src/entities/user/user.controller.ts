@@ -2,66 +2,58 @@ import {
   Controller,
   Get,
   Post,
-  Req,
-  Res,
-  Put,
-  Patch,
-  Delete,
   Param,
-  ParseIntPipe,
   Body,
+  HttpCode,
+  ParseUUIDPipe,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+  Delete,
+  Put,
 } from '@nestjs/common';
-import { Response, Request } from 'express';
-
+import { CreateUserDto } from './dto/createUserDto';
+import { UpdatePasswordDto } from './dto/updatePasswordDto';
 import { UserService } from './user.service';
-import { UpdateUserDto } from './dto/updateUser.dto';
+import { UserEntity } from './utils/userEntity';
 
-@Controller('users')
+@UseInterceptors(ClassSerializerInterceptor)
+@Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private userService: UserService) {}
 
-  @Get('/')
-  async getAllUsers(@Res() res: Response) {
+  @Get()
+  async getAll() {
     const users = await this.userService.getAllUsers();
-
-    return res.send({
-      status: 'ok',
-      data: users,
-    });
+    const usersOhnePassword = users.map((user) => new UserEntity(user));
+    return usersOhnePassword;
   }
 
-  @Get('/:id')
-  async getUser(@Param('id', ParseIntPipe) id: number, @Res() res: Response) {
-    const userData = await this.userService.getUserData(id);
-
-    return res.send({
-      status: 'ok',
-      data: userData,
-    });
+  @Post()
+  async createUser(@Body() userDTO: CreateUserDto): Promise<UserEntity> {
+    const createdUser = await this.userService.createUser(userDTO);
+    return new UserEntity(createdUser);
   }
 
-  @Post('/')
-  async createUser(@Req() req: Request, @Res() res: Response) {
-    await this.userService.createUser(req.body);
-    return res.send({ status: 'ok' });
+  @Get(':id')
+  async getUser(
+    @Param('id', new ParseUUIDPipe()) id: string,
+  ): Promise<UserEntity> {
+    const user = await this.userService.getUser(id);
+    return new UserEntity(user);
   }
 
-  @Put('/:id')
-  async updateUser(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() body: UpdateUserDto,
-    @Res() res: Response,
-  ) {
-    this.userService.updateUserData(id, body);
-    return res.send({ status: 'ok' });
+  @HttpCode(204)
+  @Delete(':id')
+  async deleteUser(@Param('id', new ParseUUIDPipe()) id: string) {
+    await this.userService.deleteUser(id);
   }
 
-  @Delete('/:id')
-  async deleteUser(
-    @Param('id', ParseIntPipe) id: number,
-    @Res() res: Response,
-  ) {
-    this.userService.deleteUser(id);
-    return res.send({ status: 'ok' });
+  @Put(':id')
+  async updateUserPassword(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body() passwordDTO: UpdatePasswordDto,
+  ): Promise<UserEntity> {
+    const user = await this.userService.updateUserPassword(id, passwordDTO);
+    return new UserEntity(user);
   }
 }
