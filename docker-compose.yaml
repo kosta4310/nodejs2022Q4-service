@@ -20,9 +20,7 @@ services:
 
   postgres15:
     container_name: postgres15
-    image: database
-    ports:
-      - ${POSTGRES_PORT}:5432
+    build: ./database/
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
