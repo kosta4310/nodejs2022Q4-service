@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule as NestCofigModule } from '@nestjs/config';
+import { ConfigModule as NestConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [NestCofigModule.forRoot()],
+  imports: [NestConfigModule.forRoot()],
 })
 export class ConfigModule {}

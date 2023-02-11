@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
-import { CreateTrackDto } from 'src/track/dto/createTrackDto';
-import { Track } from 'src/track/interfaces/track.interface';
+import { CreateTrackDto } from 'src/entities/track/dto/createTrackDto';
+import { Track } from 'src/entities/track/interfaces/track.interface';
 
 @Injectable()
 export class TrackDbService {

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreateArtistDto } from 'src/artist/dto/createArtistDto';
-import { UpdateArtistDto } from 'src/artist/dto/updateArtistDto';
+import { CreateArtistDto } from 'src/entities/artist/dto/createArtistDto';
+import { UpdateArtistDto } from 'src/entities/artist/dto/updateArtistDto';
 import { randomUUID } from 'node:crypto';
-import { Artist } from 'src/artist/interfaces/artist.interface';
+import { Artist } from 'src/entities/artist/interfaces/artist.interface';
 
 @Injectable()
 export class ArtistDbService {

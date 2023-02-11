@@ -40,9 +40,9 @@ export class ArtistController {
     return await this.artistService.updateArtist(id, artistDTO);
   }
 
-  @HttpCode(204)
-  @Delete(':id')
-  async deleteArtist(@Param('id', new ParseUUIDPipe()) id: string) {
-    return await this.artistService.deleteArtist(id);
-  }
+  // @HttpCode(204)
+  // @Delete(':id')
+  // async deleteArtist(@Param('id', new ParseUUIDPipe()) id: string) {
+  //   return await this.artistService.deleteArtist(id);
+  // }
 }

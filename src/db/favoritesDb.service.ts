@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Favorites } from 'src/favorites/interfaces/favofites.interface';
+import { Favorites } from 'src/entities/favorites/interfaces/favofites.interface';
 
 @Injectable()
 export class FavoritesDbService {
