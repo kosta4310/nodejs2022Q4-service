@@ -47,30 +47,28 @@ export class ArtistService {
       }
     }
     return await this.artistRepository.save(artist);
-
-    // try {
-    //   const updatedArtist = await this.artistRepository.update(id, data);
-    //   return updatedArtist;
-    // } catch (error) {
-    //   throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
-    // }
   }
 
-  // async deleteArtist(id: string) {
-  //   const artist = await this.artistDb.delete(id);
-  //   if (!artist) {
-  //     throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
-  //   }
+  async deleteArtist(id: string) {
+    const artist = await this.artistRepository.findOneBy({ id });
+    if (!artist) {
+      throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
+    }
 
-  //   const album = this.albumDb.findMany('artistId', id);
-  //   const track = this.trackDb.findMany('artistId', id);
-  //   this.favDb.delete('artists', id);
+    // const artist = await this.artistDb.delete(id);
+    // if (!artist) {
+    //   throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
+    // }
 
-  //   const entities = await Promise.all([album, track]);
-  //   entities.forEach((entity) =>
-  //     entity.forEach((entity: Album | Track) => (entity.artistId = null)),
-  //   );
+    // const album = this.albumDb.findMany('artistId', id);
+    // const track = this.trackDb.findMany('artistId', id);
+    // this.favDb.delete('artists', id);
 
-  //   return artist;
-  // }
+    // const entities = await Promise.all([album, track]);
+    // entities.forEach((entity) =>
+    //   entity.forEach((entity: Album | Track) => (entity.artistId = null)),
+    // );
+
+    return artist;
+  }
 }
