@@ -16,6 +16,7 @@ services:
     restart: always
 
   postgres15:
+    container_name: postgres15
     image: database
     ports:
       - ${POSTGRES_PORT}:5432
