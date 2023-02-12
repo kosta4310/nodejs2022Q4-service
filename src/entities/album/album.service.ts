@@ -53,12 +53,31 @@ export class AlbumService {
   }
 
   async updateAlbum(id: string, data: UpdateAlbumDto) {
-    try {
-      const updatedAlbum = await this.albumRepository.update(id, data);
-      return updatedAlbum;
-    } catch (error) {
+    // try {
+    //   const updatedAlbum = await this.albumRepository.update(id, data);
+    //   return updatedAlbum;
+    // } catch (error) {
+    //   throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
+    // }
+    const entity = await this.albumRepository.findOneBy({ id });
+    if (!entity) {
       throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
     }
+    for (const key in data) {
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
+        const element = data[key];
+        entity[key] = element;
+      }
+    }
+    try {
+      await this.albumRepository.update({ id }, data);
+    } catch (error) {
+      throw new HttpException(
+        `May be artist with passed id doesn't exist`,
+        404,
+      );
+    }
+    return entity;
   }
 
   // async deleteAlbum(id: string) {

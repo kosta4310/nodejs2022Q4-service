@@ -36,18 +36,18 @@ export class ArtistService {
   }
 
   async updateArtist(id: string, data: UpdateArtistDto) {
-    const artist = await this.artistRepository.findOneBy({ id });
-    if (!artist) {
+    const entity = await this.artistRepository.findOneBy({ id });
+    if (!entity) {
       throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
     }
     for (const key in data) {
       if (Object.prototype.hasOwnProperty.call(data, key)) {
         const element = data[key];
-        artist[key] = element;
+        entity[key] = element;
       }
     }
     await this.artistRepository.update({ id }, data);
-    return artist;
+    return entity;
   }
 
   async deleteArtist(id: string) {
