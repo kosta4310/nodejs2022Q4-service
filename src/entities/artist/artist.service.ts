@@ -46,7 +46,8 @@ export class ArtistService {
         artist[key] = element;
       }
     }
-    return await this.artistRepository.save(artist);
+    await this.artistRepository.update({ id }, data);
+    return artist;
   }
 
   async deleteArtist(id: string) {

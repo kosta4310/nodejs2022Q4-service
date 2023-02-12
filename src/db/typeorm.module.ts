@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule as NestTypeOrmModule } from '@nestjs/typeorm';
+import { Album } from 'src/entities/album/album.entity';
+import { Artist } from 'src/entities/artist/artist.entity';
 
 @Module({
   imports: [
@@ -11,7 +13,8 @@ import { TypeOrmModule as NestTypeOrmModule } from '@nestjs/typeorm';
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
       synchronize: true,
-      entities: ['dist/entities/**/*.entity.js'],
+      entities: [Artist, Album],
+      // entities: ['dist/entities/**/*.entity.js'],
     }),
   ],
 })
