@@ -18,17 +18,16 @@ export class FavoritesController {
     return await this.favoritesService.getAll();
   }
 
-  @Post('track/:id')
-  async addTrack(@Param('id', new ParseUUIDPipe()) id: string) {
-    return await this.favoritesService.addTrack(id);
-  }
+  // @Post('track/:id')
+  // async addTrack(@Param('id', new ParseUUIDPipe()) id: string) {
+  //   return await this.favoritesService.addTrack(id);
+  // }
 
-  @HttpCode(204)
-  @Delete('track/:id')
-  async deleteTrack(@Param('id', new ParseUUIDPipe()) id: string) {
-    return await this.favoritesService.deleteTrack(id);
-  }
-
+  // @HttpCode(204)
+  // @Delete('track/:id')
+  // async deleteTrack(@Param('id', new ParseUUIDPipe()) id: string) {
+  //   return await this.favoritesService.deleteTrack(id);
+  // }
   @Post('album/:id')
   async addAlbum(@Param('id', new ParseUUIDPipe()) id: string) {
     return await this.favoritesService.addAlbum(id);
@@ -40,14 +39,14 @@ export class FavoritesController {
     return await this.favoritesService.deleteAlbum(id);
   }
 
-  @Post('artist/:id')
-  async addArtist(@Param('id', new ParseUUIDPipe()) id: string) {
-    return await this.favoritesService.addArtist(id);
-  }
+  // @Post('artist/:id')
+  // async addArtist(@Param('id', new ParseUUIDPipe()) id: string) {
+  //   return await this.favoritesService.addArtist(id);
+  // }
 
-  @HttpCode(204)
-  @Delete('artist/:id')
-  async deleteArtist(@Param('id', new ParseUUIDPipe()) id: string) {
-    return await this.favoritesService.deleteArtist(id);
-  }
+  // @HttpCode(204)
+  // @Delete('artist/:id')
+  // async deleteArtist(@Param('id', new ParseUUIDPipe()) id: string) {
+  //   return await this.favoritesService.deleteArtist(id);
+  // }
 }

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule as NestTypeOrmModule } from '@nestjs/typeorm';
 import { Album } from 'src/entities/album/album.entity';
 import { Artist } from 'src/entities/artist/artist.entity';
+import { FavoritesAlbum } from 'src/entities/favorites/favAlbum.entity';
 import { Track } from 'src/entities/track/track.entity';
 import { User } from 'src/entities/user/user.entity';
 
@@ -15,7 +16,7 @@ import { User } from 'src/entities/user/user.entity';
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
       synchronize: true,
-      entities: [Artist, Album, Track, User],
+      entities: [Artist, Album, Track, User, FavoritesAlbum],
       // entities: ['dist/entities/**/*.entity.js'],
     }),
   ],
