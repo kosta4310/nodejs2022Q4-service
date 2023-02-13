@@ -1,17 +1,22 @@
 import { HttpException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { UserDbService } from 'src/db/userDb.service';
 import { toCompare } from 'src/utils/toCompare';
 import { toHash } from 'src/utils/toHash';
+import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/createUserDto';
 import { UpdatePasswordDto } from './dto/updatePasswordDto';
-import { User } from './interfaces/user.interface';
+import { User } from './user.entity';
 
 @Injectable()
 export class UserService {
-  constructor(private userDb: UserDbService) {}
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
 
   async getAllUsers() {
-    return await this.userDb.getAll();
+    return await this.userRepository.find();
   }
 
   async createUser({ login, password }: CreateUserDto): Promise<User> {
@@ -20,11 +25,12 @@ export class UserService {
       throw new Error('Error bcrypt');
     }
     password = hashPassword;
-    return await this.userDb.createUser({ login, password });
+    const newUser = this.userRepository.create({ login, password });
+    return await this.userRepository.save(newUser);
   }
 
   async getUser(id: string) {
-    const res = await this.userDb.getUser(id);
+    const res = await this.userRepository.findOneBy({ id });
     if (res) {
       return res;
     }
@@ -32,18 +38,18 @@ export class UserService {
   }
 
   async deleteUser(id: string) {
-    const res = await this.userDb.deleteUser(id);
-    if (res) {
-      return res;
+    const res = await this.userRepository.delete(id);
+    if (!res.affected) {
+      throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
     }
-    throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
+    return res;
   }
 
   async updateUserPassword(
     id: string,
     { oldPassword, newPassword }: UpdatePasswordDto,
   ) {
-    const user = await this.userDb.getUser(id);
+    const user = await this.userRepository.findOneBy({ id });
     if (!user) {
       throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
     }
@@ -54,6 +60,8 @@ export class UserService {
     }
 
     const hashNewPassword = await toHash(newPassword);
-    return await this.userDb.updateUser(id, hashNewPassword);
+    await this.userRepository.update(id, { password: hashNewPassword });
+    user.password = hashNewPassword;
+    return await this.userRepository.findOneBy({ id });
   }
 }
