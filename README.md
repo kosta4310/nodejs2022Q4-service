@@ -1,5 +1,7 @@
 # Home Library Service
 
+# ИЗМЕНИТЬ ВИДИМОСТЬ РЕПОЗИТОРИЯ
+
 ## Prerequisites
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
@@ -254,7 +256,6 @@ Created a Home Library Service! `Users` can create, read, update, delete data ab
 **Hints**
 
 - To generate all entities `id`s use [Node.js module](https://nodejs.org/dist/latest-v18.x/docs/api/crypto.html#cryptorandomuuidoptions).
-
 
 ## Testing
 
