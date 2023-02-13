@@ -80,17 +80,18 @@ export class AlbumService {
     return entity;
   }
 
-  // async deleteAlbum(id: string) {
-  //   const album = await this.albumDb.delete(id);
-  //   if (!album) {
-  //     throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
-  //   }
-  //   const track = this.trackDb.findMany('albumId', id);
-  //   this.favDb.delete('albums', id);
-  //   const entities = await Promise.all([track]);
-  //   entities.forEach((entity) =>
-  //     entity.forEach((entity) => (entity.albumId = null)),
-  //   );
-  //   return album;
-  // }
+  async deleteAlbum(id: string) {
+    const { affected } = await this.albumRepository.delete(id);
+    if (!affected) {
+      throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
+    }
+    return;
+    // const track = this.albumRepository.findMany('albumId', id);
+    // this.favDb.delete('albums', id);
+    // const entities = await Promise.all([track]);
+    // entities.forEach((entity) =>
+    //   entity.forEach((entity) => (entity.albumId = null)),
+    // );
+    // return album;
+  }
 }

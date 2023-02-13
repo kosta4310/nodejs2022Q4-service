@@ -40,9 +40,9 @@ export class AlbumController {
     return await this.albumService.updateAlbum(id, albumDTO);
   }
 
-  // @HttpCode(204)
-  // @Delete(':id')
-  // async deleteAlbum(@Param('id', new ParseUUIDPipe()) id: string) {
-  //   return await this.albumService.deleteAlbum(id);
-  // }
+  @HttpCode(204)
+  @Delete(':id')
+  async deleteAlbum(@Param('id', new ParseUUIDPipe()) id: string) {
+    return await this.albumService.deleteAlbum(id);
+  }
 }

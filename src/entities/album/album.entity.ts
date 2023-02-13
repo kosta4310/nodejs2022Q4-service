@@ -22,7 +22,7 @@ export class Album {
   @Column({ name: 'artist_id', type: 'uuid', default: null })
   artistId: string | null;
 
-  @ManyToOne(() => Artist)
+  @ManyToOne(() => Artist, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'artist_id', referencedColumnName: 'id' })
   artist: Artist;
 }

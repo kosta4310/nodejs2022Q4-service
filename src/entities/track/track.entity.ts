@@ -26,11 +26,11 @@ export class Track {
   @Column({ name: 'album_id', type: 'uuid', default: null })
   albumId: string | null;
 
-  @ManyToOne(() => Artist)
+  @ManyToOne(() => Artist, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'artist_id', referencedColumnName: 'id' })
   artist: Artist;
 
-  @ManyToOne(() => Album)
+  @ManyToOne(() => Album, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'album_id', referencedColumnName: 'id' })
   album: Album;
 

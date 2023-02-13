@@ -57,22 +57,13 @@ export class TrackService {
       );
     }
     return entity;
-
-    // try {
-    //   const updatedTrack = await this.trackRepository.update(id, data);
-    //   return updatedTrack;
-    // } catch (error) {
-    //   throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
-    // }
   }
 
-  // async deleteTrack(id: string) {
-  //   const track = await this.trackDb.delete(id);
-  //   if (!track) {
-  //     throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
-  //   }
-  //   this.favDb.delete('tracks', id);
-
-  //   return track;
-  // }
+  async deleteTrack(id: string) {
+    const { affected } = await this.trackRepository.delete(id);
+    if (!affected) {
+      throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
+    }
+    return;
+  }
 }
