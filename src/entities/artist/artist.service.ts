@@ -1,21 +1,25 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { Album } from 'src/entities/album/interfaces/album.interface';
 import { AlbumDbService } from 'src/db/albumDb.service';
 import { ArtistDbService } from 'src/db/artistDb.service';
 import { FavoritesDbService } from 'src/db/favoritesDb.service';
 import { TrackDbService } from 'src/db/trackDb.service';
-import { Track } from 'src/entities/track/interfaces/track.interface';
 import { CreateArtistDto } from './dto/createArtistDto';
 import { UpdateArtistDto } from './dto/updateArtistDto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Artist } from './artist.entity';
 import { Repository } from 'typeorm';
+import { Album } from '../album/album.entity';
+import { Track } from '../track/track.entity';
 
 @Injectable()
 export class ArtistService {
   constructor(
     @InjectRepository(Artist)
     private readonly artistRepository: Repository<Artist>,
+    @InjectRepository(Album)
+    private readonly albumRepository: Repository<Album>,
+    @InjectRepository(Track)
+    private readonly trackRepository: Repository<Track>,
   ) {}
 
   async getAllArtists() {
@@ -56,20 +60,20 @@ export class ArtistService {
       throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
     }
 
-    // const artist = await this.artistDb.delete(id);
-    // if (!artist) {
-    //   throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
-    // }
-
-    // const album = this.albumDb.findMany('artistId', id);
-    // const track = this.trackDb.findMany('artistId', id);
+    const album = this.albumRepository.find({ where: { artistId: id } });
+    const track = this.trackRepository.find({ where: { artistId: id } });
     // this.favDb.delete('artists', id);
 
-    // const entities = await Promise.all([album, track]);
-    // entities.forEach((entity) =>
-    //   entity.forEach((entity: Album | Track) => (entity.artistId = null)),
-    // );
+    const [albumEntities, trackEntities] = await Promise.all([album, track]);
 
+    const albumPromises = albumEntities.map((entity) => {
+      return this.albumRepository.update(entity.id, { artistId: null });
+    });
+    const trackPromises = trackEntities.map((entity) => {
+      return this.trackRepository.update(entity.id, { artistId: null });
+    });
+
+    await Promise.all([albumPromises, trackPromises]);
     return artist;
   }
 }

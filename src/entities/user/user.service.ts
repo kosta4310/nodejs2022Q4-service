@@ -61,7 +61,6 @@ export class UserService {
 
     const hashNewPassword = await toHash(newPassword);
     await this.userRepository.update(id, { password: hashNewPassword });
-    user.password = hashNewPassword;
     return await this.userRepository.findOneBy({ id });
   }
 }
