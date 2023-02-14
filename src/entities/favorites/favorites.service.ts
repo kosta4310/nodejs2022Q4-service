@@ -1,9 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AlbumDbService } from 'src/db/albumDb.service';
-import { ArtistDbService } from 'src/db/artistDb.service';
-import { FavoritesDbService } from 'src/db/favoritesDb.service';
-import { TrackDbService } from 'src/db/trackDb.service';
 import { Repository } from 'typeorm';
 import { FavoritesAlbum } from './favoriteEntities/favAlbum.entity';
 import { FavoritesArtist } from './favoriteEntities/favArtist.entity';
