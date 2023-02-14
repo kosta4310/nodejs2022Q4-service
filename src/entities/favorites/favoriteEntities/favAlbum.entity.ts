@@ -6,7 +6,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Album } from '../album/album.entity';
+import { Album } from '../../album/album.entity';
 
 @Entity('favorites_album')
 export class FavoritesAlbum {

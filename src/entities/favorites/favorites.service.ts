@@ -5,42 +5,68 @@ import { ArtistDbService } from 'src/db/artistDb.service';
 import { FavoritesDbService } from 'src/db/favoritesDb.service';
 import { TrackDbService } from 'src/db/trackDb.service';
 import { Repository } from 'typeorm';
-import { FavoritesAlbum } from './favAlbum.entity';
+import { FavoritesAlbum } from './favoriteEntities/favAlbum.entity';
+import { FavoritesArtist } from './favoriteEntities/favArtist.entity';
+import { FavoritesTrack } from './favoriteEntities/favTrack.entity';
 
 @Injectable()
 export class FavoritesService {
   constructor(
     @InjectRepository(FavoritesAlbum)
     private readonly favAlbumRepository: Repository<FavoritesAlbum>,
+    @InjectRepository(FavoritesArtist)
+    private readonly favArtistRepository: Repository<FavoritesArtist>,
+    @InjectRepository(FavoritesTrack)
+    private readonly favTrackRepository: Repository<FavoritesTrack>,
   ) {}
 
   async getAll() {
-    const favofites = await this.favAlbumRepository.find({
+    const raw1 = await this.favAlbumRepository.find({
       relations: { album: true },
     });
-    console.log(favofites);
+    const albums = raw1.reduce((res, curr) => {
+      res.push(curr.album);
+      return res;
+    }, []);
 
-    return favofites;
+    const raw2 = await this.favArtistRepository.find({
+      relations: { artist: true },
+    });
+    const artists = raw2.reduce((res, curr) => {
+      res.push(curr.artist);
+      return res;
+    }, []);
+
+    const raw3 = await this.favTrackRepository.find({
+      relations: { track: true },
+    });
+    const tracks = raw3.reduce((res, curr) => {
+      res.push(curr.track);
+      return res;
+    }, []);
+
+    return { albums, artists, tracks };
   }
 
-  // async addTrack(id: string) {
-  //   const track = await this.trackDb.getOne(id);
-  //   if (!track) {
-  //     throw new HttpException(`Record with id === ${id} doesn't exist`, 422);
-  //   }
-  //   return await this.favoritesDb.add('tracks', id);
-  // }
+  async addTrack(id: string) {
+    const track = this.favTrackRepository.create({ trackId: id });
+    try {
+      return await this.favTrackRepository.save(track);
+    } catch (error) {
+      throw new HttpException(`Record with id === ${id} doesn't exist`, 422);
+    }
+  }
 
-  // async deleteTrack(id: string) {
-  //   const res = await this.favoritesDb.delete('tracks', id);
-  //   if (!res) {
-  //     throw new HttpException(
-  //       `Record with id === ${id} doesn't exist in favorites`,
-  //       404,
-  //     );
-  //   }
-  //   return res;
-  // }
+  async deleteTrack(id: string) {
+    const { affected } = await this.favTrackRepository.delete({ trackId: id });
+    if (!affected) {
+      throw new HttpException(
+        `Record with id === ${id} doesn't exist in favorites`,
+        404,
+      );
+    }
+    return;
+  }
 
   async addAlbum(id: string) {
     const album = this.favAlbumRepository.create({ albumId: id });
@@ -67,22 +93,25 @@ export class FavoritesService {
     return;
   }
 
-  // async addArtist(id: string) {
-  //   const artist = await this.artistDb.getOne(id);
-  //   if (!artist) {
-  //     throw new HttpException(`Record with id === ${id} doesn't exist`, 422);
-  //   }
-  //   return await this.favoritesDb.add('artists', id);
-  // }
+  async addArtist(id: string) {
+    const artist = this.favArtistRepository.create({ artistId: id });
+    try {
+      return await this.favArtistRepository.save(artist);
+    } catch (error) {
+      throw new HttpException(`Record with id === ${id} doesn't exist`, 422);
+    }
+  }
 
-  // async deleteArtist(id: string) {
-  //   const res = await this.favoritesDb.delete('artists', id);
-  //   if (!res) {
-  //     throw new HttpException(
-  //       `Record with id === ${id} doesn't exist in favorites`,
-  //       404,
-  //     );
-  //   }
-  //   return res;
-  // }
+  async deleteArtist(id: string) {
+    const { affected } = await this.favArtistRepository.delete({
+      artistId: id,
+    });
+    if (!affected) {
+      throw new HttpException(
+        `Record with id === ${id} doesn't exist in favorites`,
+        404,
+      );
+    }
+    return;
+  }
 }
