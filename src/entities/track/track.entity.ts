@@ -3,7 +3,6 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Album } from '../album/album.entity';
@@ -33,12 +32,4 @@ export class Track {
   @ManyToOne(() => Album, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'album_id', referencedColumnName: 'id' })
   album: Album;
-
-  // @OneToMany(() => Album, (album) => album.artistId) // note: we will create author property in the Photo class below
-  // albums: Album[];
-  //   id: string; // uuid v4
-  //   name: string;
-  //   artistId: string | null; // refers to Artist
-  //   albumId: string | null; // refers to Album
-  //   duration: number; // integer number
 }

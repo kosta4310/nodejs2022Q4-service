@@ -1,7 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FavoritesDbService } from 'src/db/favoritesDb.service';
-import { TrackDbService } from 'src/db/trackDb.service';
 import { Repository } from 'typeorm';
 import { CreateTrackDto } from './dto/createTrackDto';
 import { Track } from './track.entity';

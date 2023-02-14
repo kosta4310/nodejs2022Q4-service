@@ -1,6 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserDbService } from 'src/db/userDb.service';
 import { toCompare } from 'src/utils/toCompare';
 import { toHash } from 'src/utils/toHash';
 import { Repository } from 'typeorm';
@@ -38,10 +37,6 @@ export class UserService {
   }
 
   async deleteUser(id: string) {
-    // const res = await this.userRepository.findOneBy({ id });
-    // if (!res) {
-    //   throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
-    // }
     const { affected } = await this.userRepository.delete(id);
     if (!affected) {
       throw new HttpException(`Record with id === ${id} doesn't exist`, 404);

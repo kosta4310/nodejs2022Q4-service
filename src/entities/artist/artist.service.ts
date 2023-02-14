@@ -50,19 +50,5 @@ export class ArtistService {
       throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
     }
     return;
-    // const album = this.albumRepository.find({ where: { artistId: id } });
-    // const track = this.trackRepository.find({ where: { artistId: id } });
-    // // this.favDb.delete('artists', id);
-
-    // const [albumEntities, trackEntities] = await Promise.all([album, track]);
-
-    // const albumPromises = albumEntities.map((entity) => {
-    //   return this.albumRepository.update(entity.id, { artistId: null });
-    // });
-    // const trackPromises = trackEntities.map((entity) => {
-    //   return this.trackRepository.update(entity.id, { artistId: null });
-    // });
-
-    // await Promise.all([albumPromises, trackPromises]);
   }
 }

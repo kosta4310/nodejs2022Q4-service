@@ -71,11 +71,6 @@ export class FavoritesService {
     } catch (error) {
       throw new HttpException(`Record with id === ${id} doesn't exist`, 422);
     }
-
-    // if (!album) {
-    //   throw new HttpException(`Record with id === ${id} doesn't exist`, 422);
-    // }
-    // return await this.favAlbumRepository.add('albums', id);
   }
 
   async deleteAlbum(id: string) {

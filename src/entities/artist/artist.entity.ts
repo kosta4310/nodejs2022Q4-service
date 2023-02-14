@@ -1,5 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Album } from '../album/album.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('artist')
 export class Artist {
@@ -11,7 +10,4 @@ export class Artist {
 
   @Column({ name: 'name', type: 'varchar' })
   name: string;
-
-  // @OneToMany(() => Album, (album) => album.artistId) // note: we will create author property in the Photo class below
-  // albums: Album[];
 }
