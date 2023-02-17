@@ -19,7 +19,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:images": "docker scan nodejs2022q4-service-app:latest & docker scan nodejs2022q4-service-postgres15:latest"
+    "scan": "docker scan nodejs2022q4-service-app:latest & docker scan nodejs2022q4-service-postgres15:latest"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
