@@ -25,8 +25,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - pgdata:/var/lib/postgresql/data/
-      - pglogs:/var/log/postgresql
+      - ./pgdata:/var/lib/postgresql/data/
     networks:
       - custom
     restart: always
