@@ -30,19 +30,9 @@ services:
     networks:
       - custom_network
     restart: always
+    command: ["postgres", "-c", "logging_collector=on", "-c", "log_directory=./db_logs", "-c", "log_filename=postgresql.log", "-c", "log_statement=all"]
 
-  # pgadmin:
-  #   container_name: pgadmin
-  #   image: dpage/pgadmin4:6.20
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: realanka77@gmail.com
-  #     PGADMIN_DEFAULT_PASSWORD: kos
-  #     PGADMIN_CONFIG_SERVER_MODE: "False"
-  #   ports:
-  #     - 5050:80
-  #   networks:
-  #     - custom_network
-  #   restart: always
+
 volumes:
   pgdata:
 networks:
