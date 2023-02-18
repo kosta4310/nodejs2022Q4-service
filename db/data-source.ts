@@ -50,6 +50,7 @@ export const dataSourceOptions: DataSourceOptions = {
   database: configService.get('POSTGRES_DB'),
   entities: ['dist/src/entities/**/*.entity.js'],
   migrations: ['dist/db/migrations/*.js'],
+  migrationsRun: true,
   synchronize: false,
 };
 
