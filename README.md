@@ -12,7 +12,7 @@
 ```
 git clone https://github.com/kosta4310/nodejs2022Q4-service.git
 cd nodejs2022Q4-service
-git checkout branch/containerization
+git checkout database&orm
 ```
 
 ## Installing NPM modules
@@ -21,21 +21,25 @@ git checkout branch/containerization
 npm install
 ```
 
+## Add .env file
+
+- Change a name of file .env.example to .env and change if nessesary a variables values
+
 ## Running docker container
 
-you must have the docker running
+you must have the docker desktop running
 
 ```
 docker-compose up
 ```
 
-### To run all tests
+## To run all tests, open a second terminal and perform follow command
 
 ```
 npm run test
 ```
 
-### Auto-fix and format
+## Auto-fix and format
 
 ```
 npm run lint
@@ -45,8 +49,21 @@ npm run lint
 npm run format
 ```
 
-### For scan images for security vulnerabilities
+## For scan images for security vulnerabilities
 
 ```
 npm run scan
+
+```
+
+## For generate a new migration perform
+
+```
+npm run migration:generate
+```
+
+## For running a new migration perform
+
+```
+npm run migration:run
 ```
