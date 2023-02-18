@@ -12,7 +12,7 @@
 ```
 git clone https://github.com/kosta4310/nodejs2022Q4-service.git
 cd nodejs2022Q4-service
-git checkout branch/database&orm
+git checkout database&orm
 ```
 
 ## Installing NPM modules
