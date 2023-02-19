@@ -12,7 +12,7 @@
 ```
 git clone https://github.com/kosta4310/nodejs2022Q4-service.git
 cd nodejs2022Q4-service
-git checkout database&orm
+git checkout database-orm
 ```
 
 ## Installing NPM modules
@@ -59,7 +59,7 @@ npm run scan
 ## For generate a new migration perform
 
 ```
-npm run migration:generate
+npm run migration:generate -- db/migrations/Name_your_migration
 ```
 
 ## For running a new migration perform
