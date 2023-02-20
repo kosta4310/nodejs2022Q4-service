@@ -23,7 +23,7 @@ npm install
 
 ## Add .env file
 
-- Change a name of file .env.example to .env and change if nessesary a variables values
+- Copy file .env.example and rename the copied file to .env and change if nessesary a variables values
 
 ## Running docker container
 
