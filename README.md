@@ -1,7 +1,5 @@
 # Home Library Service
 
-# ИЗМЕНИТЬ ВИДИМОСТЬ РЕПОЗИТОРИЯ
-
 ## Prerequisites
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
@@ -38,6 +36,10 @@ docker-compose up
 ```
 npm run test
 ```
+
+## Using swagger api
+
+An API Swagger is available at localhost:4000/api by default
 
 ## Auto-fix and format
 
