@@ -1,7 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { toCompare } from 'src/utils/toCompare';
-import { toHash } from 'src/utils/toHash';
+import { createHash } from 'node:crypto';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/createUserDto';
 import { UpdatePasswordDto } from './dto/updatePasswordDto';
@@ -19,7 +18,7 @@ export class UserService {
   }
 
   async createUser({ login, password }: CreateUserDto): Promise<User> {
-    const hashPassword = await toHash(password);
+    const hashPassword = this.hashPassword(password);
     if (!hashPassword) {
       throw new Error('Error bcrypt');
     }
@@ -53,13 +52,16 @@ export class UserService {
       throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
     }
 
-    const isEquals = await toCompare(oldPassword, user.password);
+    const isEquals = this.hashPassword(oldPassword) === user.password;
     if (!isEquals) {
       throw new HttpException(`oldPassword is wrong`, 403);
     }
 
-    const hashNewPassword = await toHash(newPassword);
+    const hashNewPassword = this.hashPassword(newPassword);
     await this.userRepository.update(id, { password: hashNewPassword });
     return await this.userRepository.findOneBy({ id });
   }
+
+  private hashPassword = (password: string): string =>
+        createHash('sha256').update(password).digest('hex');
 }
