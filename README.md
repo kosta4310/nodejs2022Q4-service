@@ -1,7 +1,5 @@
 # Home Library Service
 
-# ИЗМЕНИТЬ ВИДИМОСТЬ РЕПОЗИТОРИЯ
-
 ## Prerequisites
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
