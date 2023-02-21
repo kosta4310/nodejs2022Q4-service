@@ -23,7 +23,9 @@ export class UserController {
 
   @Get()
   async getAll() {
-    return await this.userService.getAllUsers();
+    const users = await this.userService.getAllUsers();
+    const usersOhnePassword = users.map((user) => new UserEntity(user));
+    return usersOhnePassword;
   }
 
   @Post()
