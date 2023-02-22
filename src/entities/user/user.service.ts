@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { createHash } from 'node:crypto';
 import { Repository } from 'typeorm';
@@ -14,33 +14,36 @@ export class UserService {
   ) {}
 
   async getAllUsers() {
-    return await this.userRepository.find();
+    const users = await this.userRepository.find();
+    return users;
   }
 
   async createUser({ login, password }: CreateUserDto): Promise<User> {
     const hashPassword = this.hashPassword(password);
     if (!hashPassword) {
-      throw new Error('Error bcrypt');
+      throw new Error();
     }
-    password = hashPassword;
-    const newUser = this.userRepository.create({ login, password });
-    return await this.userRepository.save(newUser);
+    const newUser = this.userRepository.create({
+      login,
+      password: hashPassword,
+    });
+    const savedUser = await this.userRepository.save(newUser);
+    return savedUser;
   }
 
   async getUser(id: string) {
-    const res = await this.userRepository.findOneBy({ id });
-    if (res) {
-      return res;
+    const user = await this.userRepository.findOneBy({ id });
+    if (!user) {
+      throw new NotFoundException(`Record with id === ${id} doesn't exist`);
     }
-    throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
+    return user;
   }
 
   async deleteUser(id: string) {
     const { affected } = await this.userRepository.delete(id);
     if (!affected) {
-      throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
+      throw new NotFoundException(`Record with id === ${id} doesn't exist`);
     }
-    return;
   }
 
   async updateUserPassword(
@@ -49,19 +52,20 @@ export class UserService {
   ) {
     const user = await this.userRepository.findOneBy({ id });
     if (!user) {
-      throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
+      throw new NotFoundException(`Record with id === ${id} doesn't exist`);
     }
 
     const isEquals = this.hashPassword(oldPassword) === user.password;
     if (!isEquals) {
-      throw new HttpException(`oldPassword is wrong`, 403);
+      throw new NotFoundException(`An old password is wrong`);
     }
 
     const hashNewPassword = this.hashPassword(newPassword);
     await this.userRepository.update(id, { password: hashNewPassword });
-    return await this.userRepository.findOneBy({ id });
+    const updatedUser = await this.userRepository.findOneBy({ id });
+    return updatedUser;
   }
 
   private hashPassword = (password: string): string =>
-        createHash('sha256').update(password).digest('hex');
+    createHash('sha256').update(password).digest('hex');
 }

@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateArtistDto } from './dto/createArtistDto';
 import { UpdateArtistDto } from './dto/updateArtistDto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,46 +9,44 @@ import { Repository } from 'typeorm';
 export class ArtistService {
   constructor(
     @InjectRepository(Artist)
-    private readonly artistRepository: Repository<Artist>, // @InjectRepository(Album) // private readonly albumRepository: Repository<Album>, // @InjectRepository(Track) // private readonly trackRepository: Repository<Track>,
+    private readonly artistRepository: Repository<Artist>,
   ) {}
 
   async getAllArtists() {
-    return await this.artistRepository.find();
+    const artists = await this.artistRepository.find();
+    return artists;
   }
 
   async createArtist(artistData: CreateArtistDto) {
     const newArtist = this.artistRepository.create(artistData);
-    return await this.artistRepository.save(newArtist);
+    const createdArtist = await this.artistRepository.save(newArtist);
+    return createdArtist;
   }
 
   async getArtist(id: string) {
     const artist = await this.artistRepository.findOneBy({ id });
     if (!artist) {
-      throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
+      throw new NotFoundException(`Record with id === ${id} doesn't exist`);
     }
     return artist;
   }
 
   async updateArtist(id: string, data: UpdateArtistDto) {
-    const entity = await this.artistRepository.findOneBy({ id });
-    if (!entity) {
-      throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
+    const artist = await this.artistRepository.findOneBy({ id });
+    if (!artist) {
+      throw new NotFoundException(`Record with id === ${id} doesn't exist`);
     }
-    for (const key in data) {
-      if (Object.prototype.hasOwnProperty.call(data, key)) {
-        const element = data[key];
-        entity[key] = element;
-      }
-    }
+
+    Object.entries(data).forEach(([key, value]) => (artist[key] = value));
+
     await this.artistRepository.update({ id }, data);
-    return entity;
+    return artist;
   }
 
   async deleteArtist(id: string) {
     const { affected } = await this.artistRepository.delete(id);
     if (!affected) {
-      throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
+      throw new NotFoundException(`Record with id === ${id} doesn't exist`);
     }
-    return;
   }
 }

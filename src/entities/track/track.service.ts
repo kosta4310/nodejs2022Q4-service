@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateTrackDto } from './dto/createTrackDto';
@@ -12,25 +12,29 @@ export class TrackService {
   ) {}
 
   async getAll() {
-    return await this.trackRepository.find();
+    const tracks = await this.trackRepository.find();
+    return tracks;
   }
 
   async createTrack(track: CreateTrackDto) {
     try {
-      const newTrack = await this.trackRepository.create(track);
-      return await this.trackRepository.save(newTrack);
+      const newTrack = this.trackRepository.create(track);
+      const savedTrack = await this.trackRepository.save(newTrack);
+      return savedTrack;
     } catch (error) {
-      throw new HttpException(
-        `May be artist or album with passed id doesn't exist`,
-        404,
-      );
+      if (error.code === '23503') {
+        throw new NotFoundException(
+          `An artist or an album with passed id doesn't exist`,
+        );
+      }
+      throw new Error();
     }
   }
 
   async getTrack(id: string) {
     const track = await this.trackRepository.findOneBy({ id });
     if (!track) {
-      throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
+      throw new NotFoundException(`Record with id === ${id} doesn't exist`);
     }
     return track;
   }
@@ -38,21 +42,20 @@ export class TrackService {
   async updateTrack(id: string, data: CreateTrackDto) {
     const entity = await this.trackRepository.findOneBy({ id });
     if (!entity) {
-      throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
+      throw new NotFoundException(`Record with id === ${id} doesn't exist`);
     }
-    for (const key in data) {
-      if (Object.prototype.hasOwnProperty.call(data, key)) {
-        const element = data[key];
-        entity[key] = element;
-      }
-    }
+
+    Object.entries(data).forEach(([key, value]) => (entity[key] = value));
+
     try {
       await this.trackRepository.update({ id }, data);
     } catch (error) {
-      throw new HttpException(
-        `May be artist or album with passed id doesn't exist`,
-        404,
-      );
+      if (error.code === '23503') {
+        throw new NotFoundException(
+          `An artist or an album with passed id doesn't exist`,
+        );
+      }
+      throw new Error();
     }
     return entity;
   }
@@ -60,8 +63,7 @@ export class TrackService {
   async deleteTrack(id: string) {
     const { affected } = await this.trackRepository.delete(id);
     if (!affected) {
-      throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
+      throw new NotFoundException(`Record with id === ${id} doesn't exist`);
     }
-    return;
   }
 }

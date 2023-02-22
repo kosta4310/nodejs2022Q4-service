@@ -1,8 +1,8 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { NotFoundException } from '@nestjs/common/exceptions';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
-import { Artist } from '../artist/artist.entity';
 import { Album } from './album.entity';
 import { CreateAlbumDto } from './dto/createAlbumDto';
 import { UpdateAlbumDto } from './dto/updateAlbumDto';
@@ -11,71 +11,49 @@ import { UpdateAlbumDto } from './dto/updateAlbumDto';
 export class AlbumService {
   constructor(
     @InjectRepository(Album)
-    private readonly albumRepository: Repository<Album>, // private readonly artistRepository: Repository<Artist>,
-    @InjectRepository(Artist)
-    private readonly artistRepository: Repository<Artist>,
+    private readonly albumRepository: Repository<Album>,
   ) {}
 
   async getAll() {
-    return await this.albumRepository.find();
+    const albums = await this.albumRepository.find();
+    return albums;
   }
 
   async createAlbum(albumData: CreateAlbumDto) {
-    // let artist: Artist;
-    // if (albumData.artistId) {
-    //   artist = await this.artistRepository.findOneBy({
-    //     id: albumData.artistId,
-    //   });
-    //   if (!artist) {
-    //     throw new HttpException(
-    //       `Artist with id === ${albumData.artistId} doesn't exist`,
-    //       422,
-    //     );
-    //   }
-    // }
     try {
       const newAlbum = this.albumRepository.create(albumData);
       return await this.albumRepository.save(newAlbum);
     } catch (error) {
-      throw new HttpException(
-        `May be artist with id === ${albumData.artistId} doesn't exist`,
-        404,
-      );
+      if (error.code === '23503') {
+        throw new NotFoundException(`An artist with passed id doesn't exist`);
+      }
+      throw new Error();
     }
   }
 
   async getAlbum(id: string) {
     const album = await this.albumRepository.findOneBy({ id });
     if (!album) {
-      throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
+      throw new NotFoundException(`Record with id === ${id} doesn't exist`);
     }
     return album;
   }
 
   async updateAlbum(id: string, data: UpdateAlbumDto) {
-    // try {
-    //   const updatedAlbum = await this.albumRepository.update(id, data);
-    //   return updatedAlbum;
-    // } catch (error) {
-    //   throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
-    // }
     const entity = await this.albumRepository.findOneBy({ id });
     if (!entity) {
-      throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
+      throw new NotFoundException(`Record with id === ${id} doesn't exist`);
     }
-    for (const key in data) {
-      if (Object.prototype.hasOwnProperty.call(data, key)) {
-        const element = data[key];
-        entity[key] = element;
-      }
-    }
+
+    Object.entries(data).forEach(([key, value]) => (entity[key] = value));
+
     try {
       await this.albumRepository.update({ id }, data);
     } catch (error) {
-      throw new HttpException(
-        `May be artist with passed id doesn't exist`,
-        404,
-      );
+      if (error.code === '23503') {
+        throw new NotFoundException(`An artist with passed id doesn't exist`);
+      }
+      throw new Error();
     }
     return entity;
   }
@@ -83,15 +61,7 @@ export class AlbumService {
   async deleteAlbum(id: string) {
     const { affected } = await this.albumRepository.delete(id);
     if (!affected) {
-      throw new HttpException(`Record with id === ${id} doesn't exist`, 404);
+      throw new NotFoundException(`Record with id === ${id} doesn't exist`);
     }
-    return;
-    // const track = this.albumRepository.findMany('albumId', id);
-    // this.favDb.delete('albums', id);
-    // const entities = await Promise.all([track]);
-    // entities.forEach((entity) =>
-    //   entity.forEach((entity) => (entity.albumId = null)),
-    // );
-    // return album;
   }
 }
