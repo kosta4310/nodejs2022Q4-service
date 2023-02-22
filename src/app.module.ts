@@ -6,7 +6,7 @@ import { AlbumModule } from './entities/album/album.module';
 import { FavoritesModule } from './entities/favorites/favorites.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { config } from 'dotenv';
-import { dataSourceOptions } from '../db/data-source';
+import { databaseConfig } from '../db/config-database';
 config();
 
 @Module({
@@ -16,7 +16,7 @@ config();
     ArtistModule,
     AlbumModule,
     FavoritesModule,
-    TypeOrmModule.forRoot(dataSourceOptions),
+    TypeOrmModule.forRoot(databaseConfig),
   ],
 })
 export class AppModule {}

@@ -6,7 +6,7 @@ config();
 
 const configService = new ConfigService();
 
-export const dataSourceOptions: DataSourceOptions = {
+export const databaseConfig: DataSourceOptions = {
   type: 'postgres',
   host: 'postgres15',
   port: configService.get('POSTGRES_PORT'),
@@ -19,4 +19,4 @@ export const dataSourceOptions: DataSourceOptions = {
   synchronize: false,
 };
 
-export default new DataSource(dataSourceOptions);
+export default new DataSource(databaseConfig);
