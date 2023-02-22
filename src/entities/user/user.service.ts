@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { createHash } from 'node:crypto';
 import { Repository } from 'typeorm';
@@ -57,7 +61,7 @@ export class UserService {
 
     const isEquals = this.hashPassword(oldPassword) === user.password;
     if (!isEquals) {
-      throw new NotFoundException(`An old password is wrong`);
+      throw new ForbiddenException(`An old password is wrong`);
     }
 
     const hashNewPassword = this.hashPassword(newPassword);
