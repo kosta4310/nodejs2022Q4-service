@@ -5,11 +5,17 @@ import { readFile } from 'node:fs/promises';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule } from '@nestjs/swagger';
 import { join } from 'node:path';
+
+import { LoggerMiddleware } from './logger/logger.middleware';
+import { LoggerModule } from './logger/logger.module';
 dotenv.config();
 const PORT = process.env.PORT || 4000;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
+  });
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
