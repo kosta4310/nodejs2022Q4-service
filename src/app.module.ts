@@ -7,6 +7,7 @@ import { FavoritesModule } from './entities/favorites/favorites.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { config } from 'dotenv';
 import { databaseConfig } from '../db/config-database';
+import { AuthModule } from './entities/auth/auth.module';
 config();
 
 @Module({
@@ -17,6 +18,7 @@ config();
     AlbumModule,
     FavoritesModule,
     TypeOrmModule.forRoot(databaseConfig),
+    AuthModule,
   ],
 })
 export class AppModule {}
