@@ -18,6 +18,12 @@ export class UserService {
   ) {}
 
   async getAllUsers() {
+    // function name() {
+    //   return new Promise((res, rej) => {
+    //     throw new Error();
+    //   });
+    // }
+    // name();
     const users = await this.userRepository.find();
     return users;
   }

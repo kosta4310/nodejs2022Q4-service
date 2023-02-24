@@ -5,9 +5,8 @@ import { readFile } from 'node:fs/promises';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule } from '@nestjs/swagger';
 import { join } from 'node:path';
+import { HttpException } from '@nestjs/common/exceptions';
 
-import { LoggerMiddleware } from './logger/logger.middleware';
-import { LoggerModule } from './logger/logger.module';
 dotenv.config();
 const PORT = process.env.PORT || 4000;
 

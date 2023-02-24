@@ -7,14 +7,21 @@ export class LoggerMiddleware implements NestMiddleware {
   constructor(private myLogger: MyLogger) {}
   use(req: Request, res: Response, next: NextFunction) {
     this.myLogger.setContext(req.baseUrl);
-    // this.myLogger.log(`Request ${req.method} ${JSON.stringify(req.body)}`);
+
+    const { method, query, body } = req;
+
     next();
-    this.myLogger.log(
-      `Request: ${req.method}, query ${JSON.stringify(
-        req.query,
-      )}, body ${JSON.stringify(req.body)}, response status code ${
-        res.statusCode
-      }`,
-    );
+
+    res.on('finish', () => {
+      const { statusCode } = res;
+
+      const logMessage = `Request: ${method}, query ${JSON.stringify(
+        query,
+      )},body ${JSON.stringify(body)},response status code ${statusCode}`;
+
+      if (statusCode < 400) {
+        this.myLogger.log(logMessage);
+      }
+    });
   }
 }
