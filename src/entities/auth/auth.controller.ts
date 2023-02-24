@@ -15,10 +15,11 @@ import { Token } from './types/tokenType';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  //   @Post('login')
-  //   async login(@Body() user): Promise<Token> {
-  //     return this.authService.login(user);
-  //   }
+  @Post('login')
+  async login(@Body() userDTO: CreateUserDto): Promise<Token> {
+    const tokens = this.authService.login(userDTO);
+    return tokens;
+  }
 
   @Post('signup')
   async signup(@Body() userDTO: CreateUserDto): Promise<UserEntity> {

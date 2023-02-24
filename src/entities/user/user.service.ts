@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   ForbiddenException,
+  NotAcceptableException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { createHash } from 'node:crypto';
@@ -68,6 +69,22 @@ export class UserService {
     await this.userRepository.update(id, { password: hashNewPassword });
     const updatedUser = await this.userRepository.findOneBy({ id });
     return updatedUser;
+  }
+
+  async checkPassword({ login, password }: CreateUserDto) {
+    const user = await this.userRepository.findOneBy({ login });
+
+    if (!user) {
+      throw new ForbiddenException(`Not allowed access`);
+    }
+
+    const hashedPassword = this.hashPassword(password);
+
+    if (hashedPassword !== user.password) {
+      throw new ForbiddenException(`Not allowed access`);
+    }
+
+    return user;
   }
 
   private hashPassword = (password: string): string =>
