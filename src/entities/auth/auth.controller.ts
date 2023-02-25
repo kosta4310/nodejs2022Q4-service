@@ -8,8 +8,10 @@ import {
 import { CreateUserDto } from '../user/dto/createUserDto';
 import { UserEntity } from '../user/utils/userEntity';
 import { AuthService } from './auth.service';
+import { Public } from './decorators/decorator.public';
 import { Token } from './types/tokenType';
 
+@Public()
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('auth')
 export class AuthController {
@@ -26,4 +28,7 @@ export class AuthController {
     const createdUser = await this.authService.signup(userDTO);
     return new UserEntity(createdUser);
   }
+
+  @Post('refresh')
+  async refresh() {}
 }
