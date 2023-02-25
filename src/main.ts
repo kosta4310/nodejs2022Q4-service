@@ -27,7 +27,7 @@ async function bootstrap() {
       'utf-8',
     ),
   );
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('doc', app, document);
 
   await app.listen(PORT);
   console.log(`Application is running on port ${PORT}`);

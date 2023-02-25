@@ -11,12 +11,19 @@ import { AlbumModule } from './entities/album/album.module';
 import { FavoritesModule } from './entities/favorites/favorites.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { config } from 'dotenv';
-import { dataSourceOptions } from '../db/data-source';
+// <<<<<<< HEAD
+// import { dataSourceOptions } from '../db/data-source';
 import { LoggerModule } from './logger/logger.module';
 import { LoggerMiddleware } from './logger/logger.middleware';
 import { AllExceptionsFilter } from './logger/all_exeption.filter';
-import { APP_FILTER } from '@nestjs/core/constants';
+// import { APP_FILTER } from '@nestjs/core/constants';
 import { MyLogger } from './logger/logger.service';
+// =======
+import { databaseConfig } from '../db/config-database';
+import { AuthModule } from './entities/auth/auth.module';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './entities/auth/guard/jwt-auth.guard';
+// >>>>>>> branch/auth1
 config();
 
 @Module({
@@ -26,7 +33,9 @@ config();
     ArtistModule,
     AlbumModule,
     FavoritesModule,
-    TypeOrmModule.forRoot(dataSourceOptions),
+    TypeOrmModule.forRoot(databaseConfig),
+    AuthModule,
+    // TypeOrmModule.forRoot(dataSourceOptions),
     LoggerModule,
   ],
   providers: [
@@ -34,7 +43,14 @@ config();
       provide: APP_FILTER,
       useClass: AllExceptionsFilter,
     },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
   ],
+  // providers: [
+  //   ,
+  // ],
 })
 export class AppModule implements NestModule {
   constructor(private myLogger: MyLogger) {}
