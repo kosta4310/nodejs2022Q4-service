@@ -6,7 +6,6 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
-import { ExecException } from 'child_process';
 import { Request } from 'express';
 import { MyLogger } from './logger.service';
 
