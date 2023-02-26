@@ -14,6 +14,8 @@ import { databaseConfig } from '../db/config-database';
 import { AuthModule } from './entities/auth/auth.module';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './entities/auth/guard/jwt-auth.guard';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 config();
 
 @Module({
@@ -36,7 +38,9 @@ config();
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
+    AppService,
   ],
+  controllers: [AppController],
 })
 export class AppModule implements NestModule {
   constructor(private myLogger: MyLogger) {}
@@ -44,11 +48,13 @@ export class AppModule implements NestModule {
     consumer.apply(LoggerMiddleware).forRoutes('*');
 
     process.on('uncaughtException', (err) => {
-      this.myLogger.error(`uncaughtException ${err.stack}`);
+      this.myLogger.error(`Uncaught Exception ... ${err.stack}`);
+      // process.exit(1);
     });
 
     process.on('unhandledRejection', (err: Error) => {
-      this.myLogger.error(`unhandledRejection ${err.stack}`);
+      this.myLogger.error(`Unhandled Rejection ... ${err.stack}`);
+      // process.exit(1);
     });
   }
 }
