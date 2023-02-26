@@ -5,7 +5,6 @@ import { readFile } from 'node:fs/promises';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule } from '@nestjs/swagger';
 import { join } from 'node:path';
-import { HttpException } from '@nestjs/common/exceptions';
 
 dotenv.config();
 const PORT = process.env.PORT || 4000;
@@ -23,7 +22,7 @@ async function bootstrap() {
   );
 
   const document = JSON.parse(
-    (await readFile(join(process.cwd(), './doc/openapi.json'))).toString(
+    (await readFile(join(process.cwd(), './doc/openapiV2.json'))).toString(
       'utf-8',
     ),
   );
