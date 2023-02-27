@@ -39,11 +39,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
 
-    const errorMessage = `request ${
-      req.method
-    }, url ${path}, query ${JSON.stringify(req.query)},  body ${JSON.stringify(
-      req.body,
-    )}, response status code ${httpStatus}`;
+    const errorMessage = `${path} [${req.method}], query ${JSON.stringify(
+      req.query,
+    )},  body ${JSON.stringify(req.body)}, response status code ${httpStatus}`;
 
     if (exception instanceof HttpException) {
       this.myLogger.warn(errorMessage);

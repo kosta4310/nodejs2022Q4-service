@@ -6,7 +6,8 @@ import { MyLogger } from './logger.service';
 export class LoggerMiddleware implements NestMiddleware {
   constructor(private myLogger: MyLogger) {}
   use(req: Request, res: Response, next: NextFunction) {
-    this.myLogger.setContext(req.baseUrl);
+    const url = req.baseUrl;
+    this.myLogger.setContext(url);
 
     const { method, query, body } = req;
 
@@ -20,7 +21,7 @@ export class LoggerMiddleware implements NestMiddleware {
       )},body ${JSON.stringify(body)},response status code ${statusCode}`;
 
       if (statusCode < 400) {
-        this.myLogger.log(logMessage);
+        this.myLogger.log(logMessage, url);
       }
     });
   }
