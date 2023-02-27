@@ -5,11 +5,15 @@ import { readFile } from 'node:fs/promises';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule } from '@nestjs/swagger';
 import { join } from 'node:path';
+
 dotenv.config();
 const PORT = process.env.PORT || 4000;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
+  });
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -18,11 +22,11 @@ async function bootstrap() {
   );
 
   const document = JSON.parse(
-    (await readFile(join(process.cwd(), './doc/openapi.json'))).toString(
+    (await readFile(join(process.cwd(), './doc/openapiV2.json'))).toString(
       'utf-8',
     ),
   );
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('doc', app, document);
 
   await app.listen(PORT);
   console.log(`Application is running on port ${PORT}`);

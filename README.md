@@ -34,12 +34,12 @@ docker-compose up
 ## To run all tests, open a second terminal and perform follow command
 
 ```
-npm run test
+npm run test:auth
 ```
 
 ## Using swagger api
 
-An API Swagger is available at localhost:4000/api by default
+An API Swagger is available at localhost:4000/doc by default
 
 ## Auto-fix and format
 

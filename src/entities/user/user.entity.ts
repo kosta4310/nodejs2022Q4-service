@@ -12,7 +12,7 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ name: 'login', type: 'varchar' })
+  @Column({ name: 'login', type: 'varchar', unique: true })
   login: string;
 
   @Column({ name: 'password', type: 'varchar' })
