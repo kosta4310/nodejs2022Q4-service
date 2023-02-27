@@ -48,12 +48,15 @@ export class AppModule implements NestModule {
     consumer.apply(LoggerMiddleware).forRoutes('*');
 
     process.on('uncaughtException', (err) => {
-      this.myLogger.error(`Uncaught Exception ... ${err.stack}`);
+      this.myLogger.error(`Uncaught Exception ...`);
+      this.myLogger.debug(`Uncaught Exception ... ${err.stack}`);
       // process.exit(1);
     });
 
     process.on('unhandledRejection', (err: Error) => {
-      this.myLogger.error(`Unhandled Rejection ... ${err.stack}`);
+      this.myLogger.error(`Unhandled Rejection ...`);
+      this.myLogger.debug(`Unhandled Rejection ... ${err.stack}`);
+
       // process.exit(1);
     });
   }

@@ -1,11 +1,11 @@
 import { LogLevel } from '@nestjs/common';
 
 const NAME_LOG_LEVELS: Array<LogLevel> = [
-  'log',
   'error',
   'warn',
-  'debug',
+  'log',
   'verbose',
+  'debug',
 ];
 
 export function getLogLevels(): Array<LogLevel> {

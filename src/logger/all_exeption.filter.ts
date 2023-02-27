@@ -16,8 +16,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
     private myLogger: MyLogger,
   ) {}
   catch(exception: HttpException, host: ArgumentsHost): void {
-    console.log(exception instanceof HttpException);
-
     const { httpAdapter } = this.httpAdapterHost;
     const ctx = host.switchToHttp();
     const req = ctx.getRequest<Request>();
@@ -47,6 +45,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
       req.body,
     )}, response status code ${httpStatus}`;
 
-    this.myLogger.error(errorMessage);
+    if (exception instanceof HttpException) {
+      this.myLogger.warn(errorMessage);
+    } else {
+      this.myLogger.error(errorMessage);
+    }
   }
 }

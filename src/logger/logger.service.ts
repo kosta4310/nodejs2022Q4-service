@@ -14,4 +14,24 @@ export class MyLogger extends ConsoleLogger {
       logLevels: getLogLevels(),
     });
   }
+
+  log(message: string) {
+    super.log.apply(this, [message]);
+  }
+
+  error(message: string) {
+    super.error.apply(this, [message]);
+  }
+
+  warn(message: string) {
+    super.warn.apply(this, [message]);
+  }
+
+  debug(message: string) {
+    super.debug.apply(this, [message]);
+  }
+
+  verbose(message: string) {
+    super.debug.apply(this, [message]);
+  }
 }
