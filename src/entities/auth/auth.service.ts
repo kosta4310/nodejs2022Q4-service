@@ -9,7 +9,6 @@ import { JsonWebTokenError } from 'jsonwebtoken';
 import { CreateUserDto } from '../user/dto/createUserDto';
 import { User } from '../user/user.entity';
 import { UserService } from '../user/user.service';
-// import { JwtStrategy } from './strategies/jwt.strategy';
 import { Tokens } from './types/tokenType';
 
 @Injectable()
