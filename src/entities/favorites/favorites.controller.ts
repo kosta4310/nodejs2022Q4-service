@@ -7,11 +7,14 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { JwtAccessAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { FavoritesService } from './favorites.service';
 import { FavoriteEntity } from './utils/favEntity';
 
+@UseGuards(JwtAccessAuthGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('favs')
 export class FavoritesController {
